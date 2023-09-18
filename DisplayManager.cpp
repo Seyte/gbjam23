@@ -4,11 +4,15 @@
 using namespace std;
 
 #define SCALE_FACTOR 5
+
 #define DEFAULT_SCREEN_WIDTH 160
 #define DEFAULT_SCREEN_HEIGHT 144
+
 #define DEFAULT_SCREEN_PIXEL_COUNT DEFAULT_SCREEN_WIDTH *DEFAULT_SCREEN_HEIGHT
+
 #define SCREEN_WIDTH DEFAULT_SCREEN_WIDTH *SCALE_FACTOR
 #define SCREEN_HEIGHT DEFAULT_SCREEN_HEIGHT *SCALE_FACTOR
+
 #define WINDOW_NAME "Game"
 
 #define POSITION_TO_INDEX(x, y) ((y)*DEFAULT_SCREEN_WIDTH + (x))
@@ -63,7 +67,7 @@ DisplayManager::DisplayManager()
 {
 
     memset(&app, 0, sizeof(App));
-    _displayMatrix = new Color[DEFAULT_SCREEN_HEIGHT * DEFAULT_SCREEN_WIDTH];
+    _displayMatrix = new Color[DEFAULT_SCREEN_PIXEL_COUNT];
     for (uint i = 0; i < DEFAULT_SCREEN_PIXEL_COUNT; i++)
     {
         _displayMatrix[i] = Color();
@@ -75,31 +79,28 @@ void DisplayManager::prepareScene()
 {
     // performancewise : not the best, but most probably easier to adapt to our own game console.
 
-    for (uint h = 0; h < DEFAULT_SCREEN_HEIGHT; h++)
+    for (int h = 0; h < DEFAULT_SCREEN_HEIGHT; h++)
     {
-        for (uint w = 0; w < DEFAULT_SCREEN_WIDTH; w++)
+        for (int w = 0; w < DEFAULT_SCREEN_WIDTH; w++)
         {
             Color color = _displayMatrix[POSITION_TO_INDEX(w, h)];
+
             if (SDL_SetRenderDrawColor(app.renderer, color._r, color._g, color._b, 255) < 0)
             {
                 printf("Failed to pick the color: %s\n", SDL_GetError());
                 exit(1);
             }
-            for (uint dw = 0; dw < SCALE_FACTOR; dw++)
-            {
-                for (uint dh = 0; dh < SCALE_FACTOR; dh++)
-                {
+            SDL_Rect rect = {w * SCALE_FACTOR, h * SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR};
 
-                    if (SDL_RenderDrawPoint(app.renderer, w*SCALE_FACTOR+dw, h*SCALE_FACTOR+dh) < 0)
-                    {
-                        printf("Failed to draw a point: %s\n", SDL_GetError());
-                        exit(1);
-                    }
-                }
+            if (SDL_RenderFillRect(app.renderer, &rect) < 0)
+            {
+                printf("Failed to draw a point: %s\n", SDL_GetError());
+                exit(1);
             }
         }
     }
 }
+
 void DisplayManager::render()
 {
     prepareScene();

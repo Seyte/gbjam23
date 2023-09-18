@@ -30,7 +30,13 @@
 *.exe
 *.out
 *.app
+
+#build (temporary)
 main
+DisplayManager
+Color
 
 # specifics
 .vscode/settings.json
+c_cpp_properties.json
+tasks.json
