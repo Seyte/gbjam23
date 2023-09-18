@@ -1,15 +1,15 @@
 CC = g++
 CPPFLAGS = -Wall -g -Wextra -std=c++11 `sdl2-config --cflags`
 SDLFLAGS = `sdl2-config --libs`
-DSTFILE = ./build/
+OBJDIR = ./build/
 
 all: main
 
-main: main.o DisplayManager.o Color.o
-	$(CC) $(CPPFLAGS) $^ -o $(DSTFILE)$@ $(SDLFLAGS)
+main: $(OBJDIR)main.o $(OBJDIR)DisplayManager.o $(OBJDIR)Color.o
+	$(CC) $(CPPFLAGS) $^ -o $@ $(SDLFLAGS)
 
-%.o: %.cpp
+$(OBJDIR)%.o: %.cpp
 	$(CC) $(CPPFLAGS) -c $< -o $@
 
 clean:
-	rm -f main *.o
+	rm -f main $(OBJDIR)*.o

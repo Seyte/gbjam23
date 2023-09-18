@@ -31,10 +31,11 @@
 *.out
 *.app
 
-#build (temporary)
+#build (partially temporary)
 main
 DisplayManager
 Color
+/build/*
 
 # specifics
 .vscode/settings.json
