@@ -14,6 +14,6 @@ public:
     int getY();
     void setX(int x);
     void setY(int y);
-    Position& operator=(const Position & p);
+    Position &operator=(const Position &p);
 };
 #endif

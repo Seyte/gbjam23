@@ -1,10 +1,12 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject(Position p): _position(p){}
+GameObject::GameObject(Position p) : _position(p) {}
 
-Position GameObject::getPosition(){
+Position GameObject::getPosition()
+{
     return _position;
 }
-void GameObject::setPosition(const Position& p){
+void GameObject::setPosition(const Position &p)
+{
     _position = p;
 }

@@ -11,6 +11,11 @@ Player player(p1);
 struct timeval game_start_timer;
 struct timeval game_stop_timer;
 
+struct timeval last_frame;
+struct timeval current_frame;
+int deltaTime;
+float deltaTimeInUs;
+
 int frame = 0;
 void doInput(void)
 {
@@ -69,12 +74,15 @@ int main(int argc, char *argv[])
     gettimeofday(&game_start_timer, NULL);
     while (1)
     {
-        // printf("%u %u\n",(uint)player.getPosition().getX(), (uint)player.getPosition().getY());
+        gettimeofday(&current_frame, NULL);
+        deltaTime = (current_frame.tv_sec * 1000000 + current_frame.tv_usec) - (last_frame.tv_sec * 1000000 + last_frame.tv_usec);
+        deltaTimeInUs = (float)deltaTime / (float)1000000;
         DM.setPixel((uint)player.getPosition().getX(), (uint)player.getPosition().getY(), c);
         DM.render();
         doInput();
-        player.update(0);
+        player.update(deltaTimeInUs);
         frame++;
+        last_frame = current_frame;
     }
 
     exit(0);

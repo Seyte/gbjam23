@@ -11,9 +11,10 @@ private:
     float _accelerationY;
     float _pixelToTravelX;
     float _pixelToTravelY;
+
 public:
     Player(Position p);
-    void update(int deltaTime);
+    void update(float deltaTime);
     void render();
     void setDirection(const Position &d);
 };
