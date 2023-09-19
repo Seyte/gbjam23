@@ -5,7 +5,7 @@ OBJDIR = ./build/
 
 all: main
 
-main: $(OBJDIR)main.o $(OBJDIR)DisplayManager.o $(OBJDIR)Color.o
+main: $(OBJDIR)main.o $(OBJDIR)DisplayManager.o $(OBJDIR)Color.o $(OBJDIR)Position.o $(OBJDIR)GameObject.o $(OBJDIR)Player.o
 	$(CC) $(CPPFLAGS) $^ -o $@ $(SDLFLAGS)
 
 $(OBJDIR)%.o: %.cpp
