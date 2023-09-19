@@ -1,5 +1,4 @@
 #include "DisplayManager.hpp"
-#include "SDL.h"
 #include "utils.hpp"
 #include <vector>
 #include <iostream>
@@ -37,7 +36,8 @@ typedef struct
 } App;
 
 App app;
-
+SDL_Rect destinationRect;
+SDL_Texture* test;
 void initSDL(void)
 {
     int rendererFlags, windowFlags;
@@ -69,7 +69,7 @@ void initSDL(void)
         printf("Failed to create renderer: %s\n", SDL_GetError());
         exit(1);
     }
-    SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY",0);
+    SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
     if (SDL_RenderSetLogicalSize(app.renderer, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT) != 0)
     {
         printf("Failed to resize renderer: %s\n", SDL_GetError());
@@ -77,14 +77,40 @@ void initSDL(void)
     }
 }
 
-DisplayManager::DisplayManager()
+DisplayManager::DisplayManager() : _cameraOffset(Position(0, 0))
 {
     memset(&app, 0, sizeof(App));
     initSDL();
     // load all sprites
     std::string path = PATH_TO_RESOURCE_DIR;
     for (const auto &entry : fs::directory_iterator(path))
-        std::cout << entry.path() << " " << fileEndsWithSuffix(entry.path().string(), FILE_SUFFIX) << std::endl;
+    {   
+        string filename = entry.path().string();
+        std::cout << "loading " << filename << " | is png?" << fileEndsWithSuffix(filename, FILE_SUFFIX) << std::endl;
+        if(fileEndsWithSuffix(filename, FILE_SUFFIX)){
+            
+            SDL_Surface* imageSurface = IMG_Load(filename.c_str());
+            if (!imageSurface) {
+                cout << "Failed to load image: " << filename << endl;
+                exit(1);
+            }
+            SDL_Texture* texture = SDL_CreateTextureFromSurface(app.renderer, imageSurface);
+            Sprite s(filename,texture);
+            test = s.getTexture();
+            destinationRect = {0, 0, imageSurface->w, imageSurface->h}; 
+    
+        }
+    }
+}
+
+void DisplayManager::setCameraOffset(const Position &p)
+{
+    _cameraOffset = p;
+}
+
+const Position &DisplayManager::getCameraOffset()
+{
+    return _cameraOffset;
 }
 
 void DisplayManager::render()
@@ -96,6 +122,7 @@ void DisplayManager::render()
         exit(1);
     }
     SDL_RenderClear(app.renderer);
+    SDL_RenderCopy(app.renderer, test, NULL, &destinationRect);
 }
 
 DisplayManager::~DisplayManager()
@@ -117,7 +144,7 @@ void DisplayManager::setPixel(int x, int y, Color color)
         printf("Failed to pick the color: %s\n", SDL_GetError());
         exit(1);
     }
-    SDL_Rect rect = {x , y , 1, 1};
+    SDL_Rect rect = {x, y, 1, 1};
 
     if (SDL_RenderFillRect(app.renderer, &rect) < 0)
     {

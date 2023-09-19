@@ -1,3 +1,9 @@
 #include "Sprite.hpp"
 
-Sprite::Sprite(string path):_path(path){}
+Sprite::Sprite(string path, SDL_Texture *texture) : _path(path) {
+    _texture = texture;
+}
+
+SDL_Texture* Sprite::getTexture(){
+    return _texture;
+}

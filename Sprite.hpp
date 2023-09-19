@@ -3,13 +3,18 @@
 #include <string>
 
 using namespace std;
+#include "SDL_image.h"
 
 class Sprite
 {
 private:
     string _path;
+    SDL_Texture *_texture;
+
 public:
-    Sprite(string path);
+    Sprite(string path, SDL_Texture *imageSurface);
+    SDL_Texture* getTexture();
+    ~Sprite();
 };
 
 #endif
