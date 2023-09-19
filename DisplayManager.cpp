@@ -38,6 +38,7 @@ typedef struct
 App app;
 SDL_Rect destinationRect;
 SDL_Texture* test;
+Sprite* s;
 void initSDL(void)
 {
     int rendererFlags, windowFlags;
@@ -95,9 +96,9 @@ DisplayManager::DisplayManager() : _cameraOffset(Position(0, 0))
                 exit(1);
             }
             SDL_Texture* texture = SDL_CreateTextureFromSurface(app.renderer, imageSurface);
-            SDL_FreeSurface(imageSurface);
-            Sprite s(filename,texture);
-            test = s.getTexture();
+            //SDL_FreeSurface(imageSurface);
+            s = new Sprite(filename,texture);
+            test = (*s).getTexture();
             destinationRect = {0, 0, imageSurface->w, imageSurface->h}; 
     
         }
