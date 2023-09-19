@@ -1,7 +1,13 @@
 #include "DisplayManager.hpp"
 #include "SDL.h"
+#include "utils.hpp"
+#include <vector>
+#include <iostream>
+#include <filesystem>
 
 using namespace std;
+
+namespace fs = std::filesystem;
 
 #define SCALE_FACTOR 5
 
@@ -14,6 +20,9 @@ using namespace std;
 #define SCREEN_HEIGHT DEFAULT_SCREEN_HEIGHT *SCALE_FACTOR
 
 #define WINDOW_NAME "Game"
+// TODO: we need to see how to make this work when we execute the main from any file. will have to discuss
+#define PATH_TO_RESOURCE_DIR "./resources/"
+#define FILE_SUFFIX ".png"
 
 #define POSITION_TO_INDEX(x, y) ((y)*DEFAULT_SCREEN_WIDTH + (x))
 
@@ -65,7 +74,6 @@ void renderScene(void)
 
 DisplayManager::DisplayManager()
 {
-
     memset(&app, 0, sizeof(App));
     _displayMatrix = new Color[DEFAULT_SCREEN_PIXEL_COUNT];
     for (uint i = 0; i < DEFAULT_SCREEN_PIXEL_COUNT; i++)
@@ -73,6 +81,10 @@ DisplayManager::DisplayManager()
         _displayMatrix[i] = Color();
     }
     initSDL();
+    // load all sprites
+    std::string path = PATH_TO_RESOURCE_DIR;
+    for (const auto & entry : fs::directory_iterator(path))
+        std::cout << entry.path() << " " << fileEndsWithSuffix(entry.path().string(),FILE_SUFFIX)  << std::endl;
 }
 
 void DisplayManager::prepareScene()

@@ -2,12 +2,16 @@
 #define DISPLAYMANAGER_HPP
 
 #include "Color.hpp"
-typedef unsigned int uint;
+#include <string>
+#include "Sprite.hpp"
 
+typedef unsigned int uint;
+using namespace std;
 class DisplayManager
 {
 private:
     Color *_displayMatrix;
+    unordered_map<string, Sprite> _spriteTable;
     void prepareScene();
 public:
     DisplayManager();

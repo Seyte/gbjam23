@@ -1,11 +1,11 @@
 CC = g++
-CPPFLAGS = -Wall -g -Wextra -std=c++11 `sdl2-config --cflags`
+CPPFLAGS = -Wall -g -Wextra -std=c++17 `sdl2-config --cflags`
 SDLFLAGS = `sdl2-config --libs`
 OBJDIR = ./build/
 
 all: main
 
-main: $(OBJDIR)main.o $(OBJDIR)DisplayManager.o $(OBJDIR)Color.o $(OBJDIR)Position.o $(OBJDIR)GameObject.o $(OBJDIR)Player.o
+main: $(OBJDIR)main.o $(OBJDIR)DisplayManager.o $(OBJDIR)Color.o $(OBJDIR)Position.o $(OBJDIR)GameObject.o $(OBJDIR)Player.o $(OBJDIR)Sprite.o $(OBJDIR)utils.o
 	$(CC) $(CPPFLAGS) $^ -o $@ $(SDLFLAGS)
 
 $(OBJDIR)%.o: %.cpp
