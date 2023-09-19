@@ -44,7 +44,7 @@ void initSDL(void)
 
     rendererFlags = SDL_RENDERER_ACCELERATED;
 
-    windowFlags = 0;
+    windowFlags = SDL_WINDOW_SHOWN;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -67,6 +67,12 @@ void initSDL(void)
     if (!app.renderer)
     {
         printf("Failed to create renderer: %s\n", SDL_GetError());
+        exit(1);
+    }
+    SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY",0);
+    if (SDL_RenderSetLogicalSize(app.renderer, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT) != 0)
+    {
+        printf("Failed to resize renderer: %s\n", SDL_GetError());
         exit(1);
     }
 }
@@ -111,7 +117,7 @@ void DisplayManager::setPixel(int x, int y, Color color)
         printf("Failed to pick the color: %s\n", SDL_GetError());
         exit(1);
     }
-    SDL_Rect rect = {x * SCALE_FACTOR, y * SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR};
+    SDL_Rect rect = {x , y , 1, 1};
 
     if (SDL_RenderFillRect(app.renderer, &rect) < 0)
     {
