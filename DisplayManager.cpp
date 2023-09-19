@@ -26,6 +26,10 @@ namespace fs = std::filesystem;
 
 #define POSITION_TO_INDEX(x, y) ((y)*DEFAULT_SCREEN_WIDTH + (x))
 
+#define DEFAULT_COLOR_R 0
+#define DEFAULT_COLOR_G 0
+#define DEFAULT_COLOR_B 0
+
 typedef struct
 {
     SDL_Renderer *renderer;
@@ -67,84 +71,53 @@ void initSDL(void)
     }
 }
 
-void renderScene(void)
-{
-    SDL_RenderPresent(app.renderer);
-}
-
 DisplayManager::DisplayManager()
 {
     memset(&app, 0, sizeof(App));
-    _displayMatrix = new Color[DEFAULT_SCREEN_PIXEL_COUNT];
-    for (uint i = 0; i < DEFAULT_SCREEN_PIXEL_COUNT; i++)
-    {
-        _displayMatrix[i] = Color();
-    }
     initSDL();
     // load all sprites
     std::string path = PATH_TO_RESOURCE_DIR;
-    for (const auto & entry : fs::directory_iterator(path))
-        std::cout << entry.path() << " " << fileEndsWithSuffix(entry.path().string(),FILE_SUFFIX)  << std::endl;
-}
-
-void DisplayManager::prepareScene()
-{
-    // performancewise : not the best, but most probably easier to adapt to our own game console.
-
-    for (int h = 0; h < DEFAULT_SCREEN_HEIGHT; h++)
-    {
-        for (int w = 0; w < DEFAULT_SCREEN_WIDTH; w++)
-        {
-            Color color = _displayMatrix[POSITION_TO_INDEX(w, h)];
-
-            if (SDL_SetRenderDrawColor(app.renderer, color._r, color._g, color._b, 255) < 0)
-            {
-                printf("Failed to pick the color: %s\n", SDL_GetError());
-                exit(1);
-            }
-            SDL_Rect rect = {w * SCALE_FACTOR, h * SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR};
-
-            if (SDL_RenderFillRect(app.renderer, &rect) < 0)
-            {
-                printf("Failed to draw a point: %s\n", SDL_GetError());
-                exit(1);
-            }
-        }
-    }
+    for (const auto &entry : fs::directory_iterator(path))
+        std::cout << entry.path() << " " << fileEndsWithSuffix(entry.path().string(), FILE_SUFFIX) << std::endl;
 }
 
 void DisplayManager::render()
 {
-    prepareScene();
-    renderScene();
+    SDL_RenderPresent(app.renderer);
+    if (SDL_SetRenderDrawColor(app.renderer, DEFAULT_COLOR_R, DEFAULT_COLOR_G, DEFAULT_COLOR_B, 255) < 0)
+    {
+        printf("Failed to pick the color: %s\n", SDL_GetError());
+        exit(1);
+    }
+    SDL_RenderClear(app.renderer);
 }
 
 DisplayManager::~DisplayManager()
 {
-    if (_displayMatrix != NULL)
-    {
-        delete[] _displayMatrix;
-        _displayMatrix = NULL;
-    }
     SDL_DestroyWindow(app.window);
     SDL_DestroyRenderer(app.renderer);
     SDL_Quit();
 }
 
-// TODO : modifier cette méthode, aussi attention aux & pour éviter de faire des copies systématiques
-Color DisplayManager::getPixel(uint x, uint y)
+void DisplayManager::setPixel(int x, int y, Color color)
 {
-    // may crash on bad value for x and y. i don't know if we need this method rn, i'll keep it and we can delete it later if needed.
-    return _displayMatrix[POSITION_TO_INDEX(x, y)];
-}
-
-void DisplayManager::setPixel(uint x, uint y, Color color)
-{
-    if (x >= DEFAULT_SCREEN_WIDTH || y >= DEFAULT_SCREEN_HEIGHT)
+    if (x < 0 || y < 0 || x >= DEFAULT_SCREEN_WIDTH || y >= DEFAULT_SCREEN_HEIGHT)
     {
         return;
     }
-    _displayMatrix[POSITION_TO_INDEX(x, y)] = color;
+
+    if (SDL_SetRenderDrawColor(app.renderer, color._r, color._g, color._b, 255) < 0)
+    {
+        printf("Failed to pick the color: %s\n", SDL_GetError());
+        exit(1);
+    }
+    SDL_Rect rect = {x * SCALE_FACTOR, y * SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR};
+
+    if (SDL_RenderFillRect(app.renderer, &rect) < 0)
+    {
+        printf("Failed to draw a point: %s\n", SDL_GetError());
+        exit(1);
+    }
 }
 
 void DisplayManager::setTexture(uint leftCornerX, uint leftCornerY, Color *colorMatrix, uint width, uint height)
