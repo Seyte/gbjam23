@@ -6,6 +6,7 @@
 #include "Position.hpp"
 #include "StaticSprites.hpp"
 #include <iostream>
+#include <list>
 
 Position p1(50, 50);
 
@@ -72,6 +73,7 @@ int main(int argc, char *argv[])
     Player player(p1, DM);
     Position direction(0, 0);
     StaticSprites background(Position(0, 0), "background.png", DM);
+    list<GameObject *> gameObjects = {&background, &player};
     gettimeofday(&game_start_timer, NULL);
     while (running)
     {
@@ -84,12 +86,14 @@ int main(int argc, char *argv[])
         player.setDirection(direction);
 
         // Update and render every game objet
-        background.render();
-        player.update(deltaTimeInUs);
-        player.render();
+        for (GameObject *go : gameObjects)
+        {
+            go->update(deltaTimeInUs);
+            go->render();
+        }
 
         // Update camera Position and render image.
-        DM.setCameraOffset(Position(player.getPosition().getX()-DEFAULT_SCREEN_WIDTH/2 , player.getPosition().getY() -DEFAULT_SCREEN_HEIGHT/2 ));
+        DM.setCameraOffset(Position(player.getPosition().getX() - DEFAULT_SCREEN_WIDTH / 2, player.getPosition().getY() - DEFAULT_SCREEN_HEIGHT / 2));
         DM.render();
 
         // End of frame
