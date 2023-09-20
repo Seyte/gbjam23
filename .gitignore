@@ -42,3 +42,6 @@ Color
 c_cpp_properties.json
 tasks.json
 settings.json
+
+# vim
+tags
