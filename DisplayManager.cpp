@@ -76,7 +76,7 @@ DisplayManager::DisplayManager() : _cameraOffset(Position(0, 0))
                 exit(1);
             }
             SDL_Texture *texture = SDL_CreateTextureFromSurface(app.renderer, imageSurface);
-            filename.erase(0,(sizeof(PATH_TO_RESOURCE_DIR)-1)/sizeof(char)); 
+            filename.erase(0, (sizeof(PATH_TO_RESOURCE_DIR) - 1) / sizeof(char));
             _spriteTable.emplace(filename, *(new Sprite(filename, texture, imageSurface->w, imageSurface->h)));
             SDL_FreeSurface(imageSurface);
         }
@@ -87,6 +87,23 @@ void DisplayManager::setCameraOffset(Position p)
 {
     _cameraOffset.setX(p.getX());
     _cameraOffset.setY(p.getY());
+    // world borders
+    if (_cameraOffset.getX() < 0)
+    {
+        _cameraOffset.setX(0);
+    }
+    if (_cameraOffset.getY() < 0)
+    {
+        _cameraOffset.setY(0);
+    }
+    if (_cameraOffset.getX() + DEFAULT_SCREEN_WIDTH > WORLD_WIDTH)
+    {
+        _cameraOffset.setX(WORLD_WIDTH - DEFAULT_SCREEN_WIDTH);
+    }
+    if (_cameraOffset.getY() + DEFAULT_SCREEN_HEIGHT > WORLD_HEGIHT)
+    {
+        _cameraOffset.setY(WORLD_HEGIHT - DEFAULT_SCREEN_HEIGHT);
+    }
 }
 
 Position DisplayManager::getCameraOffset()
@@ -122,7 +139,7 @@ void DisplayManager::setPixel(int x, int y, Color color)
         printf("Failed to pick the color: %s\n", SDL_GetError());
         exit(1);
     }
-    SDL_Rect rect = {x-getCameraOffset().getX(), y - getCameraOffset().getY(), 1, 1};
+    SDL_Rect rect = {x - getCameraOffset().getX(), y - getCameraOffset().getY(), 1, 1};
 
     if (SDL_RenderFillRect(app.renderer, &rect) < 0)
     {
@@ -135,6 +152,6 @@ void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCorn
 {
     Sprite &s = _spriteTable.at(filename);
     SDL_Texture *texture = s.getTexture();
-    SDL_Rect destinationRect = {(int)leftCornerX + _cameraOffset.getX(), (int)leftCornerY+ _cameraOffset.getY(), s.getWidth(), s.getHeight()};
+    SDL_Rect destinationRect = {(int)leftCornerX - _cameraOffset.getX(), (int)leftCornerY - _cameraOffset.getY(), s.getWidth(), s.getHeight()};
     SDL_RenderCopy(app.renderer, texture, NULL, &destinationRect);
 }
