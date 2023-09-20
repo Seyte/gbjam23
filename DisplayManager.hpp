@@ -16,13 +16,14 @@ private:
     unordered_map<string, Sprite> _spriteTable;
     Position _cameraOffset;
     void prepareScene();
+
 public:
     DisplayManager();
     void render();
-    void setCameraOffset(const Position& p);
-    const Position& getCameraOffset();
+    void setCameraOffset(const Position &p);
+    const Position &getCameraOffset();
     void setPixel(int x, int y, Color color);
-    void setTexture(uint leftCornerX, uint leftCornerY, Color *colorMatrix, uint width, uint height);
+    void setTexture(string filename, uint leftCornerX, uint leftCornerY);
     virtual ~DisplayManager();
 };
 

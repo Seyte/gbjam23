@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Player::Player(Position p) : GameObject(p), _direction(0, 0), _accelerationX(0), _accelerationY(0), _pixelToTravelX(0), _pixelToTravelY(0)
+Player::Player(Position p, DisplayManager &dm) : GameObject(p, dm), _direction(0, 0), _accelerationX(0), _accelerationY(0), _pixelToTravelX(0), _pixelToTravelY(0)
 {
 }
 

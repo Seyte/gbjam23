@@ -2,6 +2,17 @@
     "C_Cpp.default.compilerPath": "/usr/bin/clang++",
     "files.associations": {
         "filesystem": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "iostream": "cpp",
+        "atomic": "cpp",
+        "bitset": "cpp",
+        "map": "cpp",
+        "optional": "cpp",
+        "queue": "cpp",
+        "set": "cpp",
+        "stack": "cpp",
+        "unordered_set": "cpp",
+        "variant": "cpp"
     }
 }

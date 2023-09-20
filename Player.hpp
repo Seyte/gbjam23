@@ -13,7 +13,7 @@ private:
     float _pixelToTravelY;
 
 public:
-    Player(Position p);
+    Player(Position p, DisplayManager &dm);
     void update(float deltaTime);
     void render();
     void setDirection(const Position &d);

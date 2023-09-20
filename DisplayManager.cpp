@@ -36,9 +36,7 @@ typedef struct
 } App;
 
 App app;
-SDL_Rect destinationRect;
-SDL_Texture* test;
-Sprite* s;
+
 void initSDL(void)
 {
     int rendererFlags, windowFlags;
@@ -85,22 +83,22 @@ DisplayManager::DisplayManager() : _cameraOffset(Position(0, 0))
     // load all sprites
     std::string path = PATH_TO_RESOURCE_DIR;
     for (const auto &entry : fs::directory_iterator(path))
-    {   
+    {
         string filename = entry.path().string();
         std::cout << "loading " << filename << " | is png?" << fileEndsWithSuffix(filename, FILE_SUFFIX) << std::endl;
-        if(fileEndsWithSuffix(filename, FILE_SUFFIX)){
-            
-            SDL_Surface* imageSurface = IMG_Load(filename.c_str());
-            if (!imageSurface) {
+        if (fileEndsWithSuffix(filename, FILE_SUFFIX))
+        {
+
+            SDL_Surface *imageSurface = IMG_Load(filename.c_str());
+            if (!imageSurface)
+            {
                 cout << "Failed to load image: " << filename << endl;
                 exit(1);
             }
-            SDL_Texture* texture = SDL_CreateTextureFromSurface(app.renderer, imageSurface);
-            //SDL_FreeSurface(imageSurface);
-            s = new Sprite(filename,texture);
-            test = (*s).getTexture();
-            destinationRect = {0, 0, imageSurface->w, imageSurface->h}; 
-    
+            SDL_Texture *texture = SDL_CreateTextureFromSurface(app.renderer, imageSurface);
+            filename.erase(0,(sizeof(PATH_TO_RESOURCE_DIR)-1)/sizeof(char)); 
+            _spriteTable.emplace(filename, *(new Sprite(filename, texture, imageSurface->w, imageSurface->h)));
+            SDL_FreeSurface(imageSurface);
         }
     }
 }
@@ -124,11 +122,12 @@ void DisplayManager::render()
         exit(1);
     }
     SDL_RenderClear(app.renderer);
-    SDL_RenderCopy(app.renderer, test, NULL, &destinationRect);
 }
 
 DisplayManager::~DisplayManager()
 {
+    _spriteTable.clear();
+
     SDL_DestroyWindow(app.window);
     SDL_DestroyRenderer(app.renderer);
     SDL_Quit();
@@ -155,11 +154,10 @@ void DisplayManager::setPixel(int x, int y, Color color)
     }
 }
 
-void DisplayManager::setTexture(uint leftCornerX, uint leftCornerY, Color *colorMatrix, uint width, uint height)
+void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCornerY)
 {
-    (void)leftCornerX;
-    (void)leftCornerY;
-    (void)colorMatrix;
-    (void)width;
-    (void)height;
+    Sprite &s = _spriteTable.at(filename);
+    SDL_Texture *texture = s.getTexture();
+    SDL_Rect destinationRect = {(int)leftCornerX, (int)leftCornerY, s.getWidth(), s.getHeight()};
+    SDL_RenderCopy(app.renderer, texture, NULL, &destinationRect);
 }

@@ -4,9 +4,11 @@
 #include "DisplayManager.hpp"
 #include "Player.hpp"
 #include "Position.hpp"
+#include "StaticSprites.hpp"
 
 Position p1(50, 50);
-Player player(p1);
+
+bool running = true;
 
 struct timeval game_start_timer;
 struct timeval game_stop_timer;
@@ -17,15 +19,15 @@ int deltaTime;
 float deltaTimeInUs;
 
 int frame = 0;
-void doInput(void)
+Position getInput(void)
 {
     SDL_Event event;
 
+    int x = 0;
+    int y = 0;
     while (SDL_PollEvent(&event))
     {
 
-        int x = 0;
-        int y = 0;
         switch (event.type)
         {
         case SDL_KEYDOWN:
@@ -50,14 +52,14 @@ void doInput(void)
         case SDL_QUIT:
             gettimeofday(&game_stop_timer, NULL);
             printf("We had %d frames rendered in %ld seconds. This is approximatly %f fps\n", frame, game_stop_timer.tv_sec - game_start_timer.tv_sec, (float)(frame) / (float)(game_stop_timer.tv_sec - game_start_timer.tv_sec));
-            exit(0);
+            running = false;
             break;
 
         default:
             break;
         }
-        player.setDirection(Position(x, y));
     }
+    return Position(x, y);
 }
 
 int main(int argc, char *argv[])
@@ -66,24 +68,27 @@ int main(int argc, char *argv[])
     (void)argv;
 
     DisplayManager DM;
-
+    Player player(p1, DM);
+    StaticSprites background(Position(0,0), "background.png",DM);
     Color c;
     c._r = 255;
     c._g = 0;
     c._b = 0;
     gettimeofday(&game_start_timer, NULL);
-    while (1)
+    while (running)
     {
         gettimeofday(&current_frame, NULL);
         deltaTime = (current_frame.tv_sec * 1000000 + current_frame.tv_usec) - (last_frame.tv_sec * 1000000 + last_frame.tv_usec);
         deltaTimeInUs = (float)deltaTime / (float)1000000;
+        background.render();
         DM.setPixel((uint)player.getPosition().getX(), (uint)player.getPosition().getY(), c);
         DM.render();
-        doInput();
+        Position pos = getInput();
+        player.setDirection(pos);
         player.update(deltaTimeInUs);
         frame++;
         last_frame = current_frame;
     }
 
-    exit(0);
+    return 0;
 }
