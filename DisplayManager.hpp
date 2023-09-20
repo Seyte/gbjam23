@@ -4,6 +4,7 @@
 #include "Color.hpp"
 #include "Position.hpp"
 #include <string>
+#include <unordered_map>
 #include "Sprite.hpp"
 #include "SDL.h"
 #include "SDL_image.h"
