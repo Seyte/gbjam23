@@ -12,7 +12,15 @@ Player::Player(Position p, DisplayManager &dm) : GameObject(p, dm), _direction(0
 {
 }
 
-void Player::render() {}
+void Player::render()
+{
+
+    Color c;
+    c._r = 255;
+    c._g = 0;
+    c._b = 0;
+    getDisplayManager().setPixel((uint)getPosition().getX(), (uint)getPosition().getY(), c);
+}
 
 void Player::update(float deltaTime)
 {

@@ -8,27 +8,6 @@ using namespace std;
 
 namespace fs = std::filesystem;
 
-#define SCALE_FACTOR 5
-
-#define DEFAULT_SCREEN_WIDTH 160
-#define DEFAULT_SCREEN_HEIGHT 144
-
-#define DEFAULT_SCREEN_PIXEL_COUNT DEFAULT_SCREEN_WIDTH *DEFAULT_SCREEN_HEIGHT
-
-#define SCREEN_WIDTH DEFAULT_SCREEN_WIDTH *SCALE_FACTOR
-#define SCREEN_HEIGHT DEFAULT_SCREEN_HEIGHT *SCALE_FACTOR
-
-#define WINDOW_NAME "Game"
-// TODO: we need to see how to make this work when we execute the main from any file. will have to discuss
-#define PATH_TO_RESOURCE_DIR "./resources/"
-#define FILE_SUFFIX ".png"
-
-#define POSITION_TO_INDEX(x, y) ((y)*DEFAULT_SCREEN_WIDTH + (x))
-
-#define DEFAULT_COLOR_R 0
-#define DEFAULT_COLOR_G 0
-#define DEFAULT_COLOR_B 0
-
 typedef struct
 {
     SDL_Renderer *renderer;
@@ -78,6 +57,7 @@ void initSDL(void)
 
 DisplayManager::DisplayManager() : _cameraOffset(Position(0, 0))
 {
+    cout << "Constructeur DisplayManager" << endl;
     memset(&app, 0, sizeof(App));
     initSDL();
     // load all sprites
@@ -103,12 +83,13 @@ DisplayManager::DisplayManager() : _cameraOffset(Position(0, 0))
     }
 }
 
-void DisplayManager::setCameraOffset(const Position &p)
+void DisplayManager::setCameraOffset(Position p)
 {
-    _cameraOffset = p;
+    _cameraOffset.setX(p.getX());
+    _cameraOffset.setY(p.getY());
 }
 
-const Position &DisplayManager::getCameraOffset()
+Position DisplayManager::getCameraOffset()
 {
     return _cameraOffset;
 }
@@ -135,17 +116,13 @@ DisplayManager::~DisplayManager()
 
 void DisplayManager::setPixel(int x, int y, Color color)
 {
-    if (x < 0 || y < 0 || x >= DEFAULT_SCREEN_WIDTH || y >= DEFAULT_SCREEN_HEIGHT)
-    {
-        return;
-    }
 
     if (SDL_SetRenderDrawColor(app.renderer, color._r, color._g, color._b, 255) < 0)
     {
         printf("Failed to pick the color: %s\n", SDL_GetError());
         exit(1);
     }
-    SDL_Rect rect = {x, y, 1, 1};
+    SDL_Rect rect = {x-getCameraOffset().getX(), y - getCameraOffset().getY(), 1, 1};
 
     if (SDL_RenderFillRect(app.renderer, &rect) < 0)
     {
@@ -158,6 +135,6 @@ void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCorn
 {
     Sprite &s = _spriteTable.at(filename);
     SDL_Texture *texture = s.getTexture();
-    SDL_Rect destinationRect = {(int)leftCornerX, (int)leftCornerY, s.getWidth(), s.getHeight()};
+    SDL_Rect destinationRect = {(int)leftCornerX + _cameraOffset.getX(), (int)leftCornerY+ _cameraOffset.getY(), s.getWidth(), s.getHeight()};
     SDL_RenderCopy(app.renderer, texture, NULL, &destinationRect);
 }

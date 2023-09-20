@@ -8,14 +8,14 @@ class GameObject
 {
 private:
     Position _position;
-    DisplayManager _dm;
+    DisplayManager & _dm;
 
 public:
-    GameObject(Position p, DisplayManager& dm);
+    GameObject(Position p, DisplayManager & dm);
     virtual void update(float deltaTime) = 0;
     virtual void render() = 0;
     void setPosition(const Position &p);
     Position getPosition();
-    DisplayManager& getDisplayManager();
+    DisplayManager & getDisplayManager();
 };
 #endif

@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "Position.hpp"
 #include "StaticSprites.hpp"
+#include <iostream>
 
 Position p1(50, 50);
 
@@ -19,15 +20,14 @@ int deltaTime;
 float deltaTimeInUs;
 
 int frame = 0;
-Position getInput(void)
+void getInput(Position &p)
 {
     SDL_Event event;
 
-    int x = 0;
-    int y = 0;
     while (SDL_PollEvent(&event))
     {
-
+        int x = 0;
+        int y = 0;
         switch (event.type)
         {
         case SDL_KEYDOWN:
@@ -58,8 +58,9 @@ Position getInput(void)
         default:
             break;
         }
+        p.setX(x);
+        p.setY(y);
     }
-    return Position(x, y);
 }
 
 int main(int argc, char *argv[])
@@ -69,23 +70,29 @@ int main(int argc, char *argv[])
 
     DisplayManager DM;
     Player player(p1, DM);
-    StaticSprites background(Position(0,0), "background.png",DM);
-    Color c;
-    c._r = 255;
-    c._g = 0;
-    c._b = 0;
+    Position direction(0, 0);
+    StaticSprites background(Position(0, 0), "background.png", DM);
     gettimeofday(&game_start_timer, NULL);
     while (running)
     {
+        // calculate deltaTime
         gettimeofday(&current_frame, NULL);
         deltaTime = (current_frame.tv_sec * 1000000 + current_frame.tv_usec) - (last_frame.tv_sec * 1000000 + last_frame.tv_usec);
         deltaTimeInUs = (float)deltaTime / (float)1000000;
+        // Get Inputs
+        getInput(direction);
+        player.setDirection(direction);
+
+        // Update and render every game objet
         background.render();
-        DM.setPixel((uint)player.getPosition().getX(), (uint)player.getPosition().getY(), c);
-        DM.render();
-        Position pos = getInput();
-        player.setDirection(pos);
         player.update(deltaTimeInUs);
+        player.render();
+
+        // Update camera Position and render image.
+        DM.setCameraOffset(Position(player.getPosition().getX()-DEFAULT_SCREEN_WIDTH/2 , player.getPosition().getY() -DEFAULT_SCREEN_HEIGHT/2 ));
+        DM.render();
+
+        // End of frame
         frame++;
         last_frame = current_frame;
     }

@@ -1,7 +1,7 @@
 #include "StaticSprites.hpp"
 #include "DisplayManager.hpp"
 
-StaticSprites::StaticSprites(Position p, string filename,DisplayManager& dm) : GameObject(p,dm), _filename(filename){
+StaticSprites::StaticSprites(Position p, string filename,DisplayManager & dm) : GameObject(p,dm), _filename(filename){
 }
 void StaticSprites::update(float deltaTime){
     (void) deltaTime;

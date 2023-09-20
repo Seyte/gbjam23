@@ -11,7 +11,7 @@ class StaticSprites : public GameObject
 private:
     string _filename;
 public:
-    StaticSprites(Position p,string filename,DisplayManager& dm);
+    StaticSprites(Position p,string filename,DisplayManager & dm);
     void update(float deltaTime);
     void render();
 };
