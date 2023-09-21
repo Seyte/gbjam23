@@ -35,6 +35,7 @@ public:
     Position getCameraOffset();
     void setPixel(int x, int y, Color color);
     void setTexture(string filename, uint leftCornerX, uint leftCornerY);
+    Sprite* getSprite(string filename); 
     virtual ~DisplayManager();
 };
 

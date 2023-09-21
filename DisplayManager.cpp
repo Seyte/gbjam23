@@ -1,4 +1,5 @@
 #include "DisplayManager.hpp"
+#include "Sprite.hpp"
 #include "utils.hpp"
 #include <vector>
 #include <iostream>
@@ -129,6 +130,10 @@ DisplayManager::~DisplayManager()
     SDL_DestroyWindow(app.window);
     SDL_DestroyRenderer(app.renderer);
     SDL_Quit();
+}
+
+Sprite* DisplayManager::getSprite(string filename){
+    return _spriteTable.at(filename); 
 }
 
 void DisplayManager::setPixel(int x, int y, Color color)
