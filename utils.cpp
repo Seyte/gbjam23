@@ -7,3 +7,12 @@ bool fileEndsWithSuffix(string file,string suffix){
     }
     return false;
 }
+
+void printCollisionMap(int collisionMap[]){
+    for (int x = 0; x < DEFAULT_SCREEN_WIDTH; x++ ){
+        for (int y = 0; y < DEFAULT_SCREEN_HEIGHT; y++){
+            cout << collisionMap[POSITION_TO_INDEX(x,y)] << " ";
+        }
+    cout << endl;
+    }
+}

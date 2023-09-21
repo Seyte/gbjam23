@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "Position.hpp"
 #include "StaticSprites.hpp"
+#include "SpaceShip.hpp"
 #include <iostream>
 #include <list>
 
@@ -70,10 +71,39 @@ int main(int argc, char *argv[])
     (void)argv;
 
     DisplayManager DM;
-    Player player(p1, DM);
+    Player player(p1, DM, 27, 27);
     Position direction(0, 0);
     StaticSprites background(Position(0, 0), "background.png", DM);
-    list<GameObject *> gameObjects = {&background, &player};
+    SpaceShip spaceShip(Position(0, 0), DM, 64, 144);
+    list<GameObject *> gameObjects = {&background, &player, &spaceShip};
+    int collisionMap[DEFAULT_SCREEN_PIXEL_COUNT];
+    for (int i = 0; i <DEFAULT_SCREEN_PIXEL_COUNT; i ++){
+        collisionMap[i] = 0;
+    }
+    // filling up collisions map before starting the loop
+    for (GameObject *go : gameObjects)
+    {
+        // Objet possède une collisionBox?
+        CollisionBox *cb = dynamic_cast<CollisionBox *>(go);
+        if (cb)
+        {
+            Position leftTopCorner = go->getPosition();
+            int id = go->getId();
+            // Adding to the map the current collision box (they should not overlap in map init, i will did not check that yet)
+            for (int x = 0; x < (int)cb->getWidth(); x++)
+            {
+                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + x, leftTopCorner.getY())] = id;
+                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + x, leftTopCorner.getY() + cb->getHeight()-1)] = id;
+            }
+
+            for (int y = 0; y < (int)cb->getHeight(); y++)
+            {
+                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX(), leftTopCorner.getY() + y)] = id;
+                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + cb->getWidth()-1, leftTopCorner.getY() + y)] = id;
+            }
+        }
+    }
+    
     gettimeofday(&game_start_timer, NULL);
     while (running)
     {

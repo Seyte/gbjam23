@@ -1,6 +1,11 @@
 #include "GameObject.hpp"
+#include <iostream>
 
-GameObject::GameObject(Position p, DisplayManager & dm) : _position(p), _dm(dm) {}
+int GameObject::_id = 0;
+
+GameObject::GameObject(Position p, DisplayManager &dm) : _position(p), _dm(dm), _myId(_id++)
+{
+}
 
 Position GameObject::getPosition()
 {
@@ -10,6 +15,10 @@ void GameObject::setPosition(const Position &p)
 {
     _position = p;
 }
-DisplayManager & GameObject::getDisplayManager(){
+DisplayManager &GameObject::getDisplayManager()
+{
     return _dm;
+}
+int GameObject::getId(){
+    return _myId;
 }

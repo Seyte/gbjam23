@@ -14,6 +14,9 @@
         "stack": "cpp",
         "unordered_set": "cpp",
         "variant": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "__locale": "cpp",
+        "locale": "cpp",
+        "thread": "cpp"
     }
 }
