@@ -90,28 +90,34 @@ void setCollisionRectangle(int collisionMap[], GameObject *go, int id)
     }
 }
 
-bool checkCollisionAvailability(int collisionMap[], GameObject *go)
+int checkCollisionAvailability(int collisionMap[], GameObject *go)
 {
     // Objet possède une collisionBox?
     CollisionBox *cb = dynamic_cast<CollisionBox *>(go);
     // If a wall collide we will count
-    bool rValue = true;
     int collisionPoint = 0;
     if (cb)
     {
         int pointValue;
         Position leftTopCorner = go->getNextPosition();
-        if(go->getNextPosition().getX()<0){
-            return false;
+        if (go->getNextPosition().getX() < 0)
+        {
+            collisionPoint |= LEFT;
         }
-        if(go->getNextPosition().getY()<0){
-            return false;
+        if (go->getNextPosition().getY() < 0)
+        {
+            collisionPoint |= TOP;
         }
-        if (go->getNextPosition().getX()+cb->getWidth()>WORLD_WIDTH){
-            return false;
+        if (go->getNextPosition().getX() + cb->getWidth() > WORLD_WIDTH)
+        {
+            collisionPoint |= RIGHT;
         }
-        if(go->getNextPosition().getY() + cb->getHeight()>WORLD_HEGIHT){
-            return false;
+        if (go->getNextPosition().getY() + cb->getHeight() > WORLD_HEGIHT)
+        {
+            collisionPoint |= DOWN;
+        }
+        if (collisionPoint != 0){
+            return collisionPoint;
         }
         for (int x = 0; x < (int)cb->getWidth(); x++)
         {
@@ -121,15 +127,11 @@ bool checkCollisionAvailability(int collisionMap[], GameObject *go)
             {
 
                 collisionPoint |= TOP;
-                cout << "top"<<endl;
-                rValue = false;
             }
             pointValue = collisionMap[POSITION_TO_INDEX_WORLD(leftTopCorner.getX() + x, leftTopCorner.getY() + cb->getHeight() - 1)];
             if (!(pointValue == go->getId() || pointValue == DEFAULT_COLLISION_VALUE))
             {
                 collisionPoint |= DOWN;
-                cout << "down"<<endl;
-                rValue = false;
             }
         }
 
@@ -140,20 +142,15 @@ bool checkCollisionAvailability(int collisionMap[], GameObject *go)
             if (!(pointValue == go->getId() || pointValue == DEFAULT_COLLISION_VALUE))
             {
                 collisionPoint |= LEFT;
-                cout << "left"<<endl;
-                rValue = false;
             }
             pointValue = collisionMap[POSITION_TO_INDEX_WORLD(leftTopCorner.getX() + cb->getWidth() - 1, leftTopCorner.getY() + y)];
             if (!(pointValue == go->getId() || pointValue == DEFAULT_COLLISION_VALUE))
             {
                 collisionPoint |= RIGHT;
-                cout << "right"<<endl;
-                rValue = false;
             }
         }
     }
-    (void)collisionPoint;
-    return rValue;
+    return collisionPoint;
 }
 
 void printCollisionMap(int collisionMap[], DisplayManager &dm)
@@ -220,7 +217,7 @@ int main(int argc, char *argv[])
                 if (!(go->getPosition() == go->getNextPosition()))
                 {
                     // place dispo
-                    if (checkCollisionAvailability(collisionMap, go))
+                    if (checkCollisionAvailability(collisionMap, go) == 0)
                     {
                         conflictsToSolveOnNextIt = true;
                         // Remove last rectangle, add new one.
@@ -236,6 +233,7 @@ int main(int argc, char *argv[])
         {
             if (!(go->getPosition() == go->getNextPosition()))
             {
+                int side = checkCollisionAvailability(collisionMap,go);
                 go->reverseMotion();
             }
         }
@@ -245,8 +243,8 @@ int main(int argc, char *argv[])
         {
             go->render();
         }
-        //printCollisionMap(collisionMap, DM);
-        //  Update camera Position and render image.
+        // printCollisionMap(collisionMap, DM);
+        // Update camera Position and render image.
         DM.setCameraOffset(Position(player.getPosition().getX() - DEFAULT_SCREEN_WIDTH / 2, player.getPosition().getY() - DEFAULT_SCREEN_HEIGHT / 2));
         DM.render();
 
