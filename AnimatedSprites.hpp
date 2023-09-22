@@ -1,7 +1,6 @@
 #ifndef ANIMATEDSPRITES_HPP
 #define ANIMATEDSPRITES_HPP
 
-
 #include "Sprite.hpp"
 #include <vector>
 using namespace std;
@@ -10,12 +9,12 @@ class AnimatedSprites
 {
 private:
     int numberOfSprites;
-    vector<Sprite> sprites;
+    int currentAnimationStage;
+    vector<string> sprites;
 
 public:
-    void update(int deltaTime);
-    SDL_Texture* getTexture();
-    ~AnimatedSprites();
+    void update(float deltaTime);
+    string getTextureString();
 };
 
 #endif

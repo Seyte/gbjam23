@@ -3,11 +3,29 @@
 
 using namespace std;
 
-AnimatedSprites::AnimatedSprites(Sprite *s1, Sprite *s2, Sprite *s3){
-    sprites.add(s1);
-    sprites.add(s2);
-    sprites.add(s3);
+#define ANIMATIONS_PER_SEC 1
+
+AnimatedSprites::AnimatedSprites(vector<string> _sprites)
+{
+    sprites = _sprites;
     numberOfSprites = 3;
+    currentAnimationStage = 0;
 }
 
-void AnimatedSprites::update(int deltaTime)
+void AnimatedSprites::update(float deltaTime)
+{
+    if (deltaTime >= 1000 / ANIMATIONS_PER_SEC)
+    {
+        currentAnimationStage++;
+    }
+
+    if (currentAnimationStage >= numberOfSprites)
+    {
+        currentAnimationStage = 0;
+    }
+}
+
+string AnimatedSprites::getTextureString()
+{
+    sprites.at(currentAnimationStage);
+}

@@ -70,14 +70,17 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
+    vector<string> playerSprites = {"rocketman_0.png", "rocketman_1.png", "rocketman_2.png"};
+
     DisplayManager DM;
-    Player player(p1, DM, 27, 27);
+    Player player(p1, DM, 27, 27, playerSprites);
     Position direction(0, 0);
     StaticSprites background(Position(0, 0), "background.png", DM);
     SpaceShip spaceShip(Position(0, 0), DM, 64, 144);
     list<GameObject *> gameObjects = {&background, &player, &spaceShip};
     int collisionMap[DEFAULT_SCREEN_PIXEL_COUNT];
-    for (int i = 0; i <DEFAULT_SCREEN_PIXEL_COUNT; i ++){
+    for (int i = 0; i < DEFAULT_SCREEN_PIXEL_COUNT; i++)
+    {
         collisionMap[i] = 0;
     }
     // filling up collisions map before starting the loop
@@ -93,17 +96,17 @@ int main(int argc, char *argv[])
             for (int x = 0; x < (int)cb->getWidth(); x++)
             {
                 collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + x, leftTopCorner.getY())] = id;
-                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + x, leftTopCorner.getY() + cb->getHeight()-1)] = id;
+                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + x, leftTopCorner.getY() + cb->getHeight() - 1)] = id;
             }
 
             for (int y = 0; y < (int)cb->getHeight(); y++)
             {
                 collisionMap[POSITION_TO_INDEX(leftTopCorner.getX(), leftTopCorner.getY() + y)] = id;
-                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + cb->getWidth()-1, leftTopCorner.getY() + y)] = id;
+                collisionMap[POSITION_TO_INDEX(leftTopCorner.getX() + cb->getWidth() - 1, leftTopCorner.getY() + y)] = id;
             }
         }
     }
-    
+
     gettimeofday(&game_start_timer, NULL);
     while (running)
     {

@@ -8,13 +8,13 @@
 
 using namespace std;
 
-Player::Player(Position p, DisplayManager &dm, uint width, uint height) : GameObject(p, dm), CollisionBox(width, height), _direction(0, 0), _accelerationX(0), _accelerationY(0), _pixelToTravelX(0), _pixelToTravelY(0)
+Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites) : GameObject(p, dm, sprites), CollisionBox(width, height), _direction(0, 0), _accelerationX(0), _accelerationY(0), _pixelToTravelX(0), _pixelToTravelY(0)
 {
 }
 
 void Player::render()
 {
-    getDisplayManager().setTexture("rocketman.png", (uint)getPosition().getX(), (uint)getPosition().getY());
+    getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
 }
 
 void Player::update(float deltaTime)
