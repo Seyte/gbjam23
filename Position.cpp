@@ -18,3 +18,6 @@ Position &Position::operator=(const Position &p)
     _y = p._y;
     return *this;
 }
+bool Position::operator==(const Position& p) {
+    return (this->getX() == p._x) && (this->getY() == p._y);
+}

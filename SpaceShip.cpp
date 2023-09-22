@@ -11,3 +11,5 @@ void SpaceShip::render()
 
     getDisplayManager().setTexture("ship_nose_fixed.png", (uint)getPosition().getX(), (uint)getPosition().getY());
 }
+
+void SpaceShip::reverseMotion(){}

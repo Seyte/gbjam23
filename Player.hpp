@@ -18,6 +18,7 @@ public:
     void update(float deltaTime);
     void render();
     void setDirection(const Position &d);
+    void reverseMotion();
 };
 
 #endif

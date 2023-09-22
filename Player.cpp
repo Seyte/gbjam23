@@ -82,10 +82,17 @@ void Player::update(float deltaTime)
     _pixelToTravelX -= travelX;
     float travelY = floor(_pixelToTravelY);
     _pixelToTravelY -= travelY;
-    setPosition(Position(getPosition().getX() + (int)travelX, getPosition().getY() + (int)travelY));
+    int newX = getPosition().getX() + (int)travelX;
+    int newY = getPosition().getY() + (int)travelY;
+    requestMove(Position(newX, newY));
 }
 
 void Player::setDirection(const Position &d)
 {
     _direction = d;
+}
+void Player::reverseMotion()
+{
+    _accelerationX = -_accelerationX;
+    _accelerationY = -_accelerationY;
 }

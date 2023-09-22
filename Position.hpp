@@ -15,5 +15,6 @@ public:
     void setX(int x);
     void setY(int y);
     Position &operator=(const Position &p);
+    bool operator==(const Position &p);
 };
 #endif

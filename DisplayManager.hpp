@@ -19,7 +19,6 @@
 #define DEFAULT_COLOR_G 0
 #define DEFAULT_COLOR_B 0
 
-typedef unsigned int uint;
 using namespace std;
 class DisplayManager
 {

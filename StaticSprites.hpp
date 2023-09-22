@@ -14,6 +14,7 @@ public:
     StaticSprites(Position p,string filename,DisplayManager & dm);
     void update(float deltaTime);
     void render();
+    void reverseMotion();
 };
 
 #endif
