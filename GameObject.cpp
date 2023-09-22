@@ -3,11 +3,7 @@
 
 int GameObject::_id = 0;
 
-GameObject::GameObject(Position p, DisplayManager &dm) : _position(p), _dm(dm), _myId(_id++)
-{
-}
-
-GameObject::GameObject(Position p, DisplayManager &dm, string sprite) : _position(p), _dm(dm), _myId(_id++), _sprite(sprite)
+GameObject::GameObject(Position p, DisplayManager &dm) : _position(p), _dm(dm), _myId(_id++), _sprites()
 {
 }
 
@@ -30,4 +26,8 @@ DisplayManager &GameObject::getDisplayManager()
 int GameObject::getId()
 {
     return _myId;
+}
+AnimatedSprites &GameObject::getAnimatedSprites()
+{
+    return _sprites;
 }

@@ -5,18 +5,21 @@ using namespace std;
 
 #define ANIMATIONS_PER_SEC 1
 
-AnimatedSprites::AnimatedSprites(vector<string> _sprites)
+AnimatedSprites::AnimatedSprites()
 {
-    sprites = _sprites;
-    numberOfSprites = 3;
-    currentAnimationStage = 0;
+}
+
+AnimatedSprites::AnimatedSprites(vector<string> _sprites) : numberOfSprites(static_cast<int>(_sprites.size())), sprites(_sprites)
+{
 }
 
 void AnimatedSprites::update(float deltaTime)
 {
-    if (deltaTime >= 1000 / ANIMATIONS_PER_SEC)
+    timeSinceLastAnimation += deltaTime;
+    if (timeSinceLastAnimation >= (1 / ANIMATIONS_PER_SEC))
     {
         currentAnimationStage++;
+        timeSinceLastAnimation = 0;
     }
 
     if (currentAnimationStage >= numberOfSprites)
@@ -27,5 +30,8 @@ void AnimatedSprites::update(float deltaTime)
 
 string AnimatedSprites::getTextureString()
 {
-    sprites.at(currentAnimationStage);
+    if (numberOfSprites > 0)
+        return sprites.at(currentAnimationStage);
+    else
+        return NULL;
 }

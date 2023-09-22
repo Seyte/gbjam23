@@ -8,11 +8,14 @@ using namespace std;
 class AnimatedSprites
 {
 private:
-    int numberOfSprites;
-    int currentAnimationStage;
+    int numberOfSprites{0};
+    int currentAnimationStage{0};
     vector<string> sprites;
+    float timeSinceLastAnimation{0};
 
 public:
+    AnimatedSprites();
+    AnimatedSprites(vector<string> _sprites);
     void update(float deltaTime);
     string getTextureString();
 };

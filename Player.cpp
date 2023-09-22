@@ -14,11 +14,12 @@ Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<s
 
 void Player::render()
 {
-    getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
+    getDisplayManager().setTexture(getAnimatedSprites().getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
 }
 
 void Player::update(float deltaTime)
 {
+    Position currentPos = getPosition();
     // Decreasing acceleration from floating in the air
     if (_accelerationX > 0)
     {
@@ -83,6 +84,8 @@ void Player::update(float deltaTime)
     float travelY = floor(_pixelToTravelY);
     _pixelToTravelY -= travelY;
     setPosition(Position(getPosition().getX() + (int)travelX, getPosition().getY() + (int)travelY));
+
+    _sprites.update(deltaTime);
 }
 
 void Player::setDirection(const Position &d)

@@ -132,9 +132,9 @@ DisplayManager::~DisplayManager()
     SDL_Quit();
 }
 
-Sprite* DisplayManager::getSprite(string filename){
-    return _spriteTable.at(filename); 
-}
+// Sprite* DisplayManager::getSprite(string filename){
+//     return _spriteTable.at(filename);
+//}
 
 void DisplayManager::setPixel(int x, int y, Color color)
 {
