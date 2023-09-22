@@ -16,10 +16,10 @@ AnimatedSprites::AnimatedSprites(vector<string> _sprites) : numberOfSprites(stat
 void AnimatedSprites::update(float deltaTime)
 {
     timeSinceLastAnimation += deltaTime;
-    if (timeSinceLastAnimation >= (1 / ANIMATIONS_PER_SEC))
+    if (timeSinceLastAnimation >= ((float)1 / (float)ANIMATIONS_PER_SEC))
     {
         currentAnimationStage++;
-        timeSinceLastAnimation = 0;
+        timeSinceLastAnimation -= ((float)1 / (float)ANIMATIONS_PER_SEC);
     }
 
     if (currentAnimationStage >= numberOfSprites)

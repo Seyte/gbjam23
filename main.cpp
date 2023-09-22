@@ -12,6 +12,7 @@
 Position p1(50, 50);
 
 bool running = true;
+bool first = true;
 
 struct timeval game_start_timer;
 struct timeval game_stop_timer;
@@ -119,11 +120,12 @@ int main(int argc, char *argv[])
         player.setDirection(direction);
 
         // Update and render every game objet
-        for (GameObject *go : gameObjects)
-        {
-            go->update(deltaTimeInUs);
-            go->render();
-        }
+        if (!first)
+            for (GameObject *go : gameObjects)
+            {
+                go->update(deltaTimeInUs);
+                go->render();
+            }
 
         // Update camera Position and render image.
         DM.setCameraOffset(Position(player.getPosition().getX() - DEFAULT_SCREEN_WIDTH / 2, player.getPosition().getY() - DEFAULT_SCREEN_HEIGHT / 2));
@@ -132,6 +134,7 @@ int main(int argc, char *argv[])
         // End of frame
         frame++;
         last_frame = current_frame;
+        first = false;
     }
 
     return 0;
