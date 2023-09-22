@@ -31,3 +31,11 @@ AnimatedSprites &GameObject::getAnimatedSprites()
 {
     return _sprites;
 }
+Position GameObject::getNextPosition()
+{
+    return _nextPosition;
+}
+void GameObject::requestMove(Position p)
+{
+    _nextPosition = p;
+}

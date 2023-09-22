@@ -9,6 +9,7 @@ class GameObject
 {
 private:
     Position _position;
+    Position _nextPosition;
     DisplayManager &_dm;
     int _myId;
     static int _id;
@@ -23,6 +24,9 @@ public:
     virtual void render() = 0;
     void setPosition(const Position &p);
     Position getPosition();
+    Position getNextPosition();
+    void requestMove(Position p);
+    virtual void reverseMotion() = 0;
     DisplayManager &getDisplayManager();
     int getId();
     AnimatedSprites &getAnimatedSprites();
