@@ -174,6 +174,7 @@ int main(int argc, char *argv[])
     vector<string> playerSprites = {"rocketman_0.png", "rocketman_1.png", "rocketman_2.png"};
 
     DisplayManager DM;
+    StaticSprites background(Position(0, 0), "background.png", DM);
     Player player(p1, DM, 27, 27, playerSprites);
     Position direction(0, 0);
     SpaceShip spaceShip(Position(0, 0), DM, 64, 144);

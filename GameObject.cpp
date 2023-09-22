@@ -3,11 +3,11 @@
 
 int GameObject::_id = 0;
 
-GameObject::GameObject(Position p, DisplayManager &dm) : _position(p), _dm(dm), _myId(_id++), _sprites()
+GameObject::GameObject(Position p, DisplayManager &dm) : _position(p), _nextPosition(p), _dm(dm), _myId(_id++), _sprites()
 {
 }
 
-GameObject::GameObject(Position p, DisplayManager &dm, vector<string> sprites) : _position(p), _dm(dm), _myId(_id++), _sprites(sprites)
+GameObject::GameObject(Position p, DisplayManager &dm, vector<string> sprites) : _position(p), _nextPosition(p), _dm(dm), _myId(_id++), _sprites(sprites)
 {
 }
 

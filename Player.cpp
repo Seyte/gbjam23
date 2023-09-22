@@ -19,7 +19,6 @@ void Player::render()
 
 void Player::update(float deltaTime)
 {
-    Position currentPos = getPosition();
     // Decreasing acceleration from floating in the air
     if (_accelerationX > 0)
     {
