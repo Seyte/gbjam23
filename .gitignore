@@ -38,7 +38,7 @@ Color
 /build/*
 
 # specifics
-/.vscode/*.json
+.vscode
 
 # vim
 tags

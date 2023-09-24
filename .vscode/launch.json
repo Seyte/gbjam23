@@ -53,6 +53,20 @@
             ],
             "cwd": "${workspaceFolder}",
             "MIMode": "lldb"
+        },
+        {
+            "name": "C++ Launch (old)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/main",
+            "environment": [
+                {
+                    "name": "config",
+                    "value": "Debug"
+                }
+            ],
+            "cwd": "${workspaceFolder}",
+            "MIMode": "lldb"
         }
     ]
 }

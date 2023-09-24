@@ -14,7 +14,7 @@ Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<s
 
 void Player::render()
 {
-    getDisplayManager().setTexture(getAnimatedSprites().getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
+    getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
 }
 
 void Player::update(float deltaTime)

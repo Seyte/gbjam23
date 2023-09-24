@@ -29,6 +29,5 @@ public:
     virtual void reverseMotion() = 0;
     DisplayManager &getDisplayManager();
     int getId();
-    AnimatedSprites &getAnimatedSprites();
 };
 #endif
