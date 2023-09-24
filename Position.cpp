@@ -13,11 +13,6 @@ void Position::setX(int x) { _x = x; }
 
 void Position::setY(int y) { _y = y; }
 
-double Position::dist(const Position &pos)
-{
-    return sqrt(pow(_x - pos._x, 2) + pow(_y - pos._y, 2));
-}
-
 Position &Position::operator=(const Position &p)
 {
     _x = p._x;

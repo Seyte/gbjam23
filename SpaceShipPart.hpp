@@ -8,12 +8,12 @@
 class SpaceShipPart : public Interactable, public CollisionBox
 {
 public:
-    SpaceShipPart(Position p, DisplayManager &dm, vector<string> sprites, uint width, uint height);
+    SpaceShipPart(Position p, DisplayManager &dm, vector<string> sprites, int distance, uint width, uint height);
     void update(float deltaTime);
     void render();
     void interact(Player &interactor);
     void grab(Player &grabber);
-    void reverseMotion();
+    void bounce(int direction);
 };
 
 #endif

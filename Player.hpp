@@ -12,6 +12,7 @@ private:
     float _accelerationY;
     float _pixelToTravelX;
     float _pixelToTravelY;
+    vector<int> inventory;
 
 public:
     Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites);
@@ -19,6 +20,8 @@ public:
     void render();
     void setDirection(const Position &d);
     void bounce(int direction);
+    void addToInventory(int id);
+    vector<int> &getInventory();
 };
 
 #endif

@@ -16,7 +16,7 @@
 #define INTERACTION_DIST 10
 
 int DEFAULT_COLLISION_VALUE = 0;
-Position p1(70, 70);
+Position p1(100, 70);
 vector<Interactable *> interactableObjects;
 
 bool running = true;
@@ -36,8 +36,7 @@ void interactWithObjects(Player &player)
 {
     for (Interactable *interactable : interactableObjects)
     {
-        cout << "id: " << interactable->getId() << "| dist: " << player.getPosition().dist(interactable->getPosition()) << "\n";
-        if (player.getPosition().dist(interactable->getPosition()) <= INTERACTION_DIST)
+        if (getDistance(player.getPosition(), player.getHeight(), player.getHeight(), interactable->getPosition(), interactable->width, interactable->height) <= interactable->interactionDistance)
         {
             interactable->interact(player);
         }
@@ -70,7 +69,6 @@ void getInput(Position &p, Player &player)
                 x++;
                 break;
             case SDLK_a:
-                cout << "pressed a\n";
                 interactWithObjects(player);
                 break;
             default:
@@ -196,16 +194,16 @@ int main(int argc, char *argv[])
     vector<string> playerSprites = {"rocketman_0.png", "rocketman_1.png", "rocketman_2.png"};
 
     DisplayManager DM;
-    StaticSprites background(Position(0, 0), "map_tiled.png", DM);
+    StaticSprites background1(Position(0, 0), "map_tiled.png", DM);
     Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
-    SpaceShip spaceShip(Position(0, 0), DM, 64, 144);
-    SpaceShipPart firstPart(Position(100, 30), DM, vector<string>{"spaceshippart_1.png"}, 18, 18);
+    SpaceShip spaceShip(Position(0, 0), DM, 87, 160);
+    SpaceShipPart firstPart(Position(100, 30), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
-    list<GameObject *> gameObjects = {&background, &player, &spaceShip, &worldBoder, &firstPart};
+    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart};
     interactableObjects.push_back(&firstPart);
     int collisionMap[(WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2)];
-    DEFAULT_COLLISION_VALUE = background.getId();
+    DEFAULT_COLLISION_VALUE = background1.getId();
     for (int i = 0; i < (WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2); i++)
     {
         collisionMap[i] = DEFAULT_COLLISION_VALUE;

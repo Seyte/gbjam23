@@ -1,7 +1,7 @@
 #include "SpaceShipPart.hpp"
 #include "Player.hpp"
 
-SpaceShipPart::SpaceShipPart(Position p, DisplayManager &dm, vector<string> sprites, uint width, uint height) : Interactable(p, dm, sprites), CollisionBox(width, height) {}
+SpaceShipPart::SpaceShipPart(Position p, DisplayManager &dm, vector<string> sprites, int distance, uint width, uint height) : Interactable(p, dm, sprites, distance, width, height), CollisionBox(width, height) {}
 
 void SpaceShipPart::grab(Player &grabber)
 {
@@ -14,7 +14,7 @@ void SpaceShipPart::interact(Player &interactor)
     grab(interactor);
 }
 
-void SpaceShipPart::update(float deltaTime) {}
+void SpaceShipPart::update(float deltaTime) { (void)deltaTime; }
 
 void SpaceShipPart::render()
 {
@@ -24,4 +24,4 @@ void SpaceShipPart::render()
     }
 }
 
-void SpaceShipPart::reverseMotion(){};
+void SpaceShipPart::bounce(int direction) { (void)direction; }

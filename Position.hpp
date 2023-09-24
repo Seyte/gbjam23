@@ -14,7 +14,6 @@ public:
     int getY();
     void setX(int x);
     void setY(int y);
-    double dist(const Position &pos);
     Position &operator=(const Position &p);
     bool operator==(const Position &p);
 };
