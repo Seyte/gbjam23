@@ -9,4 +9,4 @@ void StaticSprites::update(float deltaTime){
 void StaticSprites::render(){
     getDisplayManager().setTexture(_filename, (uint)getPosition().getX(),(uint)getPosition().getY());
 }
-void StaticSprites::reverseMotion(){}
+void StaticSprites::bounce(int direction){(void) direction;}

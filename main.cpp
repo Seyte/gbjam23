@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 
     DisplayManager DM;
     StaticSprites background(Position(0, 0), "background.png", DM);
-    Player player(p1, DM, 27, 27, playerSprites);
+    Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
     SpaceShip spaceShip(Position(0, 0), DM, 64, 144);
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
             if (!(go->getPosition() == go->getNextPosition()))
             {
                 int side = checkCollisionAvailability(collisionMap, go);
-                go->reverseMotion();
+                go->bounce(side);
             }
         }
 

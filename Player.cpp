@@ -94,8 +94,18 @@ void Player::setDirection(const Position &d)
 {
     _direction = d;
 }
-void Player::reverseMotion()
+void Player::bounce(int direction)
 {
-    _accelerationX = -_accelerationX;
-    _accelerationY = -_accelerationY;
+    if(direction & LEFT){
+        _accelerationX = - _accelerationX;
+    }
+    if(direction & RIGHT){
+        _accelerationX = - _accelerationX;
+    }
+    if(direction & TOP){
+        _accelerationY = - _accelerationY;
+    }
+    if(direction & DOWN){
+        _accelerationY = - _accelerationY;
+    }
 }
