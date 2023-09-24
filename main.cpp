@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 
     DisplayManager DM;
     StaticSprites background(Position(0, 0), "map_tiled.png", DM);
-    Player player(p1, DM, 27, 27, playerSprites);
+    Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
     SpaceShip spaceShip(Position(0, 0), DM, 64, 144);
     SpaceShipPart firstPart(Position(100, 30), DM, vector<string>{"spaceshippart_1.png"}, 18, 18);
@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
             if (!(go->getPosition() == go->getNextPosition()))
             {
                 int side = checkCollisionAvailability(collisionMap, go);
-                go->reverseMotion();
+                go->bounce(side);
             }
         }
 

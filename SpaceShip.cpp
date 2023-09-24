@@ -13,4 +13,4 @@ void SpaceShip::render()
     getDisplayManager().setTexture("rocket_broken_deadheart.png", (uint)getPosition().getX(), (uint)getPosition().getY());
 }
 
-void SpaceShip::reverseMotion() {}
+void SpaceShip::bounce(int direction){(void) direction;}

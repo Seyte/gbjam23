@@ -26,8 +26,8 @@ public:
     Position getPosition();
     Position getNextPosition();
     void requestMove(Position p);
-    virtual void reverseMotion() = 0;
     DisplayManager &getDisplayManager();
     int getId();
+    virtual void bounce(int direction) = 0;
 };
 #endif
