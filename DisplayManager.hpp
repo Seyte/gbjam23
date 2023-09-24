@@ -1,14 +1,14 @@
 #ifndef DISPLAYMANAGER_HPP
 #define DISPLAYMANAGER_HPP
 
-#include "Color.hpp"
-#include "Position.hpp"
 #include <string>
 #include <unordered_map>
+#include <SDL.h>
+#include <SDL_image.h>
 #include "Sprite.hpp"
-#include "SDL.h"
-#include "SDL_image.h"
 #include "utils.hpp"
+#include "Color.hpp"
+#include "Position.hpp"
 
 #define WINDOW_NAME "Game"
 // TODO: we need to see how to make this work when we execute the main from any file. will have to discuss
@@ -34,6 +34,7 @@ public:
     Position getCameraOffset();
     void setPixel(int x, int y, Color color);
     void setTexture(string filename, uint leftCornerX, uint leftCornerY);
+    Sprite *getSprite(string filename);
     virtual ~DisplayManager();
 };
 

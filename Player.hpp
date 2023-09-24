@@ -14,11 +14,11 @@ private:
     float _pixelToTravelY;
 
 public:
-    Player(Position p, DisplayManager &dm, uint width, uint height);
+    Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites);
     void update(float deltaTime);
     void render();
     void setDirection(const Position &d);
-    void reverseMotion();
+    void bounce(int direction);
 };
 
 #endif

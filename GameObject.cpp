@@ -3,7 +3,13 @@
 
 int GameObject::_id = 0;
 
-GameObject::GameObject(Position p, DisplayManager &dm) : _position(p), _nextPosition(p), _dm(dm), _myId(_id++) {}
+GameObject::GameObject(Position p, DisplayManager &dm) : _position(p), _nextPosition(p), _dm(dm), _myId(_id++), _sprites()
+{
+}
+
+GameObject::GameObject(Position p, DisplayManager &dm, vector<string> sprites) : _position(p), _nextPosition(p), _dm(dm), _myId(_id++), _sprites(sprites)
+{
+}
 
 Position GameObject::getPosition()
 {
@@ -20,6 +26,10 @@ DisplayManager &GameObject::getDisplayManager()
 int GameObject::getId()
 {
     return _myId;
+}
+AnimatedSprites &GameObject::getAnimatedSprites()
+{
+    return _sprites;
 }
 Position GameObject::getNextPosition()
 {

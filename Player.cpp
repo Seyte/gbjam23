@@ -8,13 +8,13 @@
 
 using namespace std;
 
-Player::Player(Position p, DisplayManager &dm, uint width, uint height) : GameObject(p, dm), CollisionBox(width, height), _direction(0, 0), _accelerationX(0), _accelerationY(0), _pixelToTravelX(0), _pixelToTravelY(0)
+Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites) : GameObject(p, dm, sprites), CollisionBox(width, height), _direction(0, 0), _accelerationX(0), _accelerationY(0), _pixelToTravelX(0), _pixelToTravelY(0)
 {
 }
 
 void Player::render()
 {
-    getDisplayManager().setTexture("rocketman.png", (uint)getPosition().getX(), (uint)getPosition().getY());
+    getDisplayManager().setTexture(getAnimatedSprites().getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
 }
 
 void Player::update(float deltaTime)
@@ -82,17 +82,30 @@ void Player::update(float deltaTime)
     _pixelToTravelX -= travelX;
     float travelY = floor(_pixelToTravelY);
     _pixelToTravelY -= travelY;
+
     int newX = getPosition().getX() + (int)travelX;
     int newY = getPosition().getY() + (int)travelY;
     requestMove(Position(newX, newY));
+
+    _sprites.update(deltaTime);
 }
 
 void Player::setDirection(const Position &d)
 {
     _direction = d;
 }
-void Player::reverseMotion()
+void Player::bounce(int direction)
 {
-    _accelerationX = -_accelerationX;
-    _accelerationY = -_accelerationY;
+    if(direction & LEFT){
+        _accelerationX = - _accelerationX;
+    }
+    if(direction & RIGHT){
+        _accelerationX = - _accelerationX;
+    }
+    if(direction & TOP){
+        _accelerationY = - _accelerationY;
+    }
+    if(direction & DOWN){
+        _accelerationY = - _accelerationY;
+    }
 }

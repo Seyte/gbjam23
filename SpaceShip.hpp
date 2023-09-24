@@ -11,7 +11,7 @@ public:
     SpaceShip(Position p, DisplayManager &dm, uint width, uint height);
     void update(float deltaTime);
     void render();
-    void reverseMotion();
+    void bounce(int direction);
 };
 
 #endif

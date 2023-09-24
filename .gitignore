@@ -38,10 +38,7 @@ Color
 /build/*
 
 # specifics
-.vscode/settings.json
-c_cpp_properties.json
-tasks.json
-settings.json
+/.vscode/*.json
 
 # vim
 tags

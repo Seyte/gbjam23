@@ -23,13 +23,9 @@
 #define POSITION_TO_INDEX_WORLD(x, y) ((y+1)*(WORLD_WIDTH+2) + (x)+1)
 
 #define RIGHT 1
-#define RIGHT_OFFSET 0
 #define LEFT 2
-#define LEFT_OFFSET 1
 #define TOP 4
-#define TOP_OFFSET 2
 #define DOWN 8
-#define DOWN_OFFSET 3
 
 typedef unsigned int uint;
 

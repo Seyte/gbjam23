@@ -3,6 +3,7 @@
 
 #include "Position.hpp"
 #include "DisplayManager.hpp"
+#include "AnimatedSprites.hpp"
 
 class GameObject
 {
@@ -13,16 +14,21 @@ private:
     int _myId;
     static int _id;
 
+protected:
+    AnimatedSprites _sprites;
+
 public:
     GameObject(Position p, DisplayManager &dm);
+    GameObject(Position p, DisplayManager &dm, vector<string> sprites);
     virtual void update(float deltaTime) = 0;
     virtual void render() = 0;
     void setPosition(const Position &p);
     Position getPosition();
     Position getNextPosition();
     void requestMove(Position p);
-    virtual void reverseMotion() = 0;
     DisplayManager &getDisplayManager();
     int getId();
+    AnimatedSprites &getAnimatedSprites();
+    virtual void bounce(int direction) = 0;
 };
 #endif

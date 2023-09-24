@@ -15,6 +15,7 @@ int DEFAULT_COLLISION_VALUE = 0;
 Position p1(70, 70);
 
 bool running = true;
+bool first = true;
 
 struct timeval game_start_timer;
 struct timeval game_stop_timer;
@@ -116,7 +117,8 @@ int checkCollisionAvailability(int collisionMap[], GameObject *go)
         {
             collisionPoint |= DOWN;
         }
-        if (collisionPoint != 0){
+        if (collisionPoint != 0)
+        {
             return collisionPoint;
         }
         for (int x = 0; x < (int)cb->getWidth(); x++)
@@ -169,9 +171,11 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
+    vector<string> playerSprites = {"rocketman_0.png", "rocketman_1.png", "rocketman_2.png"};
+
     DisplayManager DM;
     StaticSprites background(Position(0, 0), "background.png", DM);
-    Player player(p1, DM, 27, 27);
+    Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
     SpaceShip spaceShip(Position(0, 0), DM, 64, 144);
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
@@ -199,11 +203,12 @@ int main(int argc, char *argv[])
         getInput(direction);
         player.setDirection(direction);
 
-        // Update every game objet
-        for (GameObject *go : gameObjects)
-        {
-            go->update(deltaTimeInUs);
-        }
+        // Update and render every game objet
+        if (!first)
+            for (GameObject *go : gameObjects)
+            {
+                go->update(deltaTimeInUs);
+            }
 
         // Solve collisions conflicts
         bool conflictsToSolveOnNextIt = true;
@@ -233,8 +238,8 @@ int main(int argc, char *argv[])
         {
             if (!(go->getPosition() == go->getNextPosition()))
             {
-                int side = checkCollisionAvailability(collisionMap,go);
-                go->reverseMotion();
+                int side = checkCollisionAvailability(collisionMap, go);
+                go->bounce(side);
             }
         }
 
@@ -251,6 +256,7 @@ int main(int argc, char *argv[])
         // End of frame
         frame++;
         last_frame = current_frame;
+        first = false;
     }
 
     return 0;
