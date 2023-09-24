@@ -1,4 +1,4 @@
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include <stdio.h>
 #include <sys/time.h>
 #include "DisplayManager.hpp"
@@ -10,6 +10,7 @@
 #include "InvisibleWall.hpp"
 #include "Interactable.hpp"
 #include "SpaceShipPart.hpp"
+#include "Asteroid.hpp"
 #include <iostream>
 #include <list>
 
@@ -200,7 +201,9 @@ int main(int argc, char *argv[])
     SpaceShipPart firstPart(Position(120, 30), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
     SpaceShip spaceShip(Position(0, 0), DM, 96, 160, vector<string>{"rocket_broken_deadheart.png", "rocket_broken_glowingheart.png"}, 52, firstPart.getId());
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
-    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart};
+    Asteroid asteroid(Position(150,80),DM);
+    asteroid.setDirection(Position(7,2));
+    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid};
     interactableObjects.push_back(&firstPart);
     interactableObjects.push_back(&spaceShip);
     int collisionMap[(WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2)];

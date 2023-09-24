@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <cmath>
 #include <iostream>
-#define SPEED 30
-#define ACCELERATION_DECREASE 1
-#define MAX_ACCELERATION 60
+#define PLAYER_SPEED 30
+#define PLAYER_ACCELERATION_DECREASE 1
+#define PLAYER_MAX_ACCELERATION 60
 
 using namespace std;
 
-Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites) : GameObject(p, dm, sprites), CollisionBox(width, height), _direction(0, 0), _accelerationX(0), _accelerationY(0), _pixelToTravelX(0), _pixelToTravelY(0)
+Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites) : DynamicGameObject(p, dm, sprites,PLAYER_ACCELERATION_DECREASE,PLAYER_SPEED,PLAYER_MAX_ACCELERATION), CollisionBox(width, height)
 {
 }
 
@@ -38,99 +38,8 @@ void Player::render()
 
 void Player::update(float deltaTime)
 {
-    // Decreasing acceleration from floating in the air
-    if (_accelerationX > 0)
-    {
-        _accelerationX -= ACCELERATION_DECREASE * deltaTime;
-        if (_accelerationX <= 0)
-        {
-            _accelerationX = 0;
-        }
-    }
-    else if (_accelerationX < 0)
-    {
-        _accelerationX += ACCELERATION_DECREASE * deltaTime;
-        if (_accelerationX >= 0)
-        {
-            _accelerationX = 0;
-        }
-    }
-
-    if (_accelerationY > 0)
-    {
-        _accelerationY -= ACCELERATION_DECREASE * deltaTime;
-        if (_accelerationY <= 0)
-        {
-            _accelerationY = 0;
-        }
-    }
-    else if (_accelerationY < 0)
-    {
-        if (_accelerationY >= 0)
-        {
-            _accelerationY = 0;
-        }
-        _accelerationY += ACCELERATION_DECREASE * deltaTime;
-    }
-    // Increasing acceleration if any key pressed
-
-    _accelerationX += _direction.getX() * SPEED * deltaTime;
-    _accelerationY += _direction.getY() * SPEED * deltaTime;
-    // cap the acceleration
-    if (_accelerationX >= MAX_ACCELERATION)
-    {
-        _accelerationX = MAX_ACCELERATION;
-    }
-    if (_accelerationX <= -MAX_ACCELERATION)
-    {
-        _accelerationX = -MAX_ACCELERATION;
-    }
-    if (_accelerationY >= MAX_ACCELERATION)
-    {
-        _accelerationY = MAX_ACCELERATION;
-    }
-    if (_accelerationY <= -MAX_ACCELERATION)
-    {
-        _accelerationY = -MAX_ACCELERATION;
-    }
-    // update the number of pixel to travel
-    _pixelToTravelX += _accelerationX * deltaTime;
-    _pixelToTravelY += _accelerationY * deltaTime;
-    // remove |_pixelToTravelX| from _pixelToTravelX (same for Y)
-    float travelX = floor(_pixelToTravelX);
-    _pixelToTravelX -= travelX;
-    float travelY = floor(_pixelToTravelY);
-    _pixelToTravelY -= travelY;
-
-    int newX = getPosition().getX() + (int)travelX;
-    int newY = getPosition().getY() + (int)travelY;
-    requestMove(Position(newX, newY));
-
+    DynamicGameObject::update(deltaTime);
     _sprites.update(deltaTime);
-}
-
-void Player::setDirection(const Position &d)
-{
-    _direction = d;
-}
-void Player::bounce(int direction)
-{
-    if (direction & LEFT)
-    {
-        _accelerationX = -_accelerationX;
-    }
-    if (direction & RIGHT)
-    {
-        _accelerationX = -_accelerationX;
-    }
-    if (direction & TOP)
-    {
-        _accelerationY = -_accelerationY;
-    }
-    if (direction & DOWN)
-    {
-        _accelerationY = -_accelerationY;
-    }
 }
 
 void Player::addToInventory(int id)
