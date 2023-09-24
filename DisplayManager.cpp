@@ -149,10 +149,17 @@ void DisplayManager::setPixel(int x, int y, Color color)
     }
 }
 
-void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCornerY)
+void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCornerY, double angle)
 {
     Sprite &s = _spriteTable.at(filename);
     SDL_Texture *texture = s.getTexture();
     SDL_Rect destinationRect = {(int)leftCornerX - _cameraOffset.getX(), (int)leftCornerY - _cameraOffset.getY(), s.getWidth(), s.getHeight()};
-    SDL_RenderCopy(app.renderer, texture, NULL, &destinationRect);
+    if (angle == 0)
+    {
+        SDL_RenderCopy(app.renderer, texture, NULL, &destinationRect);
+    }
+    else
+    {
+        SDL_RenderCopyEx(app.renderer, texture, NULL, &destinationRect, angle, NULL, SDL_FLIP_NONE);
+    }
 }

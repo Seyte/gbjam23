@@ -14,7 +14,26 @@ Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<s
 
 void Player::render()
 {
-    getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
+    if (_direction == Position(0, 0))
+    {
+        getDisplayManager().setTexture("rocketman.png", (uint)getPosition().getX(), (uint)getPosition().getY());
+    }
+    else if (_direction == Position(1, 0))
+    {
+        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 270);
+    }
+    else if (_direction == Position(0, 1))
+    {
+        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
+    }
+    else if (_direction == Position(-1, 0))
+    {
+        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 90);
+    }
+    else if (_direction == Position(0, -1))
+    {
+        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 180);
+    }
 }
 
 void Player::update(float deltaTime)
@@ -23,3 +42,12 @@ void Player::update(float deltaTime)
     _sprites.update(deltaTime);
 }
 
+void Player::addToInventory(int id)
+{
+    inventory.push_back(id);
+}
+
+vector<int> &Player::getInventory()
+{
+    return inventory;
+}
