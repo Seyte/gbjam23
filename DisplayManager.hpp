@@ -33,7 +33,7 @@ public:
     void setCameraOffset(Position p);
     Position getCameraOffset();
     void setPixel(int x, int y, Color color);
-    void setTexture(string filename, uint leftCornerX, uint leftCornerY);
+    void setTexture(string filename, uint leftCornerX, uint leftCornerY, double angle = 0);
     Sprite *getSprite(string filename);
     virtual ~DisplayManager();
 };

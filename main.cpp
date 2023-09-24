@@ -191,17 +191,18 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    vector<string> playerSprites = {"rocketman_0.png", "rocketman_1.png", "rocketman_2.png"};
+    vector<string> playerSprites = {"spacedude_0.png", "spacedude_1.png", "spacedude_2.png", "spacedude_3.png", "spacedude_4.png", "spacedude_5.png"};
 
     DisplayManager DM;
     StaticSprites background1(Position(0, 0), "map_tiled.png", DM);
     Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
-    SpaceShip spaceShip(Position(0, 0), DM, 96, 160);
     SpaceShipPart firstPart(Position(120, 30), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
+    SpaceShip spaceShip(Position(0, 0), DM, 96, 160, vector<string>{"rocket_broken_deadheart.png", "rocket_broken_glowingheart.png"}, 52, firstPart.getId());
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
     list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart};
     interactableObjects.push_back(&firstPart);
+    interactableObjects.push_back(&spaceShip);
     int collisionMap[(WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2)];
     DEFAULT_COLLISION_VALUE = background1.getId();
     for (int i = 0; i < (WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2); i++)

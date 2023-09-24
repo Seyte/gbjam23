@@ -6,7 +6,7 @@ SpaceShipPart::SpaceShipPart(Position p, DisplayManager &dm, vector<string> spri
 void SpaceShipPart::grab(Player &grabber)
 {
     grabbed = true;
-    // TODO : add to player inventory
+    grabber.addToInventory(getId());
 }
 
 void SpaceShipPart::interact(Player &interactor)
