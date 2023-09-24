@@ -1,4 +1,4 @@
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include <stdio.h>
 #include <sys/time.h>
 #include "DisplayManager.hpp"
@@ -8,11 +8,16 @@
 #include "SpaceShip.hpp"
 #include "Color.hpp"
 #include "InvisibleWall.hpp"
+#include "Interactable.hpp"
+#include "SpaceShipPart.hpp"
 #include <iostream>
 #include <list>
 
+#define INTERACTION_DIST 10
+
 int DEFAULT_COLLISION_VALUE = 0;
 Position p1(70, 70);
+vector<Interactable *> interactableObjects;
 
 bool running = true;
 bool first = true;
@@ -26,7 +31,20 @@ int deltaTime;
 float deltaTimeInUs;
 
 int frame = 0;
-void getInput(Position &p)
+
+void interactWithObjects(Player &player)
+{
+    for (Interactable *interactable : interactableObjects)
+    {
+        cout << "id: " << interactable->getId() << "| dist: " << player.getPosition().dist(interactable->getPosition()) << "\n";
+        if (player.getPosition().dist(interactable->getPosition()) <= INTERACTION_DIST)
+        {
+            interactable->interact(player);
+        }
+    }
+}
+
+void getInput(Position &p, Player &player)
 {
     SDL_Event event;
 
@@ -50,6 +68,10 @@ void getInput(Position &p)
                 break;
             case SDLK_RIGHT:
                 x++;
+                break;
+            case SDLK_a:
+                cout << "pressed a\n";
+                interactWithObjects(player);
                 break;
             default:
                 break;
@@ -174,12 +196,14 @@ int main(int argc, char *argv[])
     vector<string> playerSprites = {"rocketman_0.png", "rocketman_1.png", "rocketman_2.png"};
 
     DisplayManager DM;
-    StaticSprites background(Position(0, 0), "background.png", DM);
+    StaticSprites background(Position(0, 0), "map_tiled.png", DM);
     Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
     SpaceShip spaceShip(Position(0, 0), DM, 64, 144);
+    SpaceShipPart firstPart(Position(100, 30), DM, vector<string>{"spaceshippart_1.png"}, 18, 18);
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
-    list<GameObject *> gameObjects = {&background, &player, &spaceShip, &worldBoder};
+    list<GameObject *> gameObjects = {&background, &player, &spaceShip, &worldBoder, &firstPart};
+    interactableObjects.push_back(&firstPart);
     int collisionMap[(WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2)];
     DEFAULT_COLLISION_VALUE = background.getId();
     for (int i = 0; i < (WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2); i++)
@@ -200,7 +224,7 @@ int main(int argc, char *argv[])
         deltaTime = (current_frame.tv_sec * 1000000 + current_frame.tv_usec) - (last_frame.tv_sec * 1000000 + last_frame.tv_usec);
         deltaTimeInUs = (float)deltaTime / (float)1000000;
         // Get Inputs
-        getInput(direction);
+        getInput(direction, player);
         player.setDirection(direction);
 
         // Update and render every game objet

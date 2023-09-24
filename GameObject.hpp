@@ -28,7 +28,6 @@ public:
     void requestMove(Position p);
     DisplayManager &getDisplayManager();
     int getId();
-    AnimatedSprites &getAnimatedSprites();
     virtual void bounce(int direction) = 0;
 };
 #endif

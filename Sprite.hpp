@@ -3,7 +3,7 @@
 #include <string>
 
 using namespace std;
-#include "SDL_image.h"
+#include "SDL2/SDL_image.h"
 
 class Sprite
 {
@@ -15,7 +15,7 @@ private:
 
 public:
     Sprite(string path, SDL_Texture *imageSurface, int width, int height);
-    SDL_Texture* getTexture();
+    SDL_Texture *getTexture();
     int getWidth();
     int getHeight();
     ~Sprite();

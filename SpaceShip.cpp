@@ -2,14 +2,15 @@
 
 SpaceShip::SpaceShip(Position p, DisplayManager &dm, uint width, uint height) : GameObject(p, dm), CollisionBox(width, height) {}
 
-void SpaceShip::update(float deltaTime) {
-    (void) deltaTime;
+void SpaceShip::update(float deltaTime)
+{
+    (void)deltaTime;
 }
 
 void SpaceShip::render()
 {
 
-    getDisplayManager().setTexture("ship_nose_fixed.png", (uint)getPosition().getX(), (uint)getPosition().getY());
+    getDisplayManager().setTexture("rocket_broken_deadheart.png", (uint)getPosition().getX(), (uint)getPosition().getY());
 }
 
 void SpaceShip::bounce(int direction){(void) direction;}
