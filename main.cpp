@@ -16,7 +16,7 @@
 #define INTERACTION_DIST 10
 
 int DEFAULT_COLLISION_VALUE = 0;
-Position p1(100, 70);
+Position p1(130, 70);
 vector<Interactable *> interactableObjects;
 
 bool running = true;
@@ -197,8 +197,8 @@ int main(int argc, char *argv[])
     StaticSprites background1(Position(0, 0), "map_tiled.png", DM);
     Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
-    SpaceShip spaceShip(Position(0, 0), DM, 87, 160);
-    SpaceShipPart firstPart(Position(100, 30), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
+    SpaceShip spaceShip(Position(0, 0), DM, 96, 160);
+    SpaceShipPart firstPart(Position(120, 30), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
     list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart};
     interactableObjects.push_back(&firstPart);
@@ -223,6 +223,14 @@ int main(int argc, char *argv[])
         deltaTimeInUs = (float)deltaTime / (float)1000000;
         // Get Inputs
         getInput(direction, player);
+        // Check for grabs
+        for (Interactable *interactable : interactableObjects)
+        {
+            if (interactable->grabbed)
+            {
+                setCollisionRectangle(collisionMap, interactable, DEFAULT_COLLISION_VALUE);
+            }
+        }
         player.setDirection(direction);
 
         // Update and render every game objet
