@@ -110,3 +110,58 @@ void DynamicGameObject::bounce(int direction)
         _direction.setY(-_direction.getY());
     }
 }
+
+int DynamicGameObject::getAccDirection()
+{
+    if (_accelerationX == 0 && _accelerationY == 0)
+    {
+        return 0;
+    }
+    else if (_accelerationX != 0 && _accelerationY == 0)
+    {
+        if (_accelerationX > 0)
+        {
+            return RIGHT;
+        }
+        else
+        {
+            return LEFT;
+        }
+    }
+    else if (_accelerationY != 0 && _accelerationX == 0)
+    {
+        if (_accelerationY > 0)
+        {
+            return DOWN;
+        }
+        else
+        {
+            return TOP;
+        }
+    }
+    else
+    {
+        if (abs(_accelerationX) > abs(_accelerationY))
+        {
+            if (_accelerationX > 0)
+            {
+                return RIGHT;
+            }
+            else
+            {
+                return LEFT;
+            }
+        }
+        else
+        {
+            if (_accelerationY > 0)
+            {
+                return DOWN;
+            }
+            else
+            {
+                return TOP;
+            }
+        }
+    }
+}

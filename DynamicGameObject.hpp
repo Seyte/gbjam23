@@ -21,6 +21,7 @@ public:
     void reverseXAcceleration();
     void reverseYAcceleration();
     void bounce(int direction);
+    int getAccDirection();
 };
 
 #endif

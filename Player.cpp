@@ -8,31 +8,31 @@
 
 using namespace std;
 
-Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites) : DynamicGameObject(p, dm, sprites,PLAYER_ACCELERATION_DECREASE,PLAYER_SPEED,PLAYER_MAX_ACCELERATION), CollisionBox(width, height)
+Player::Player(Position p, DisplayManager &dm, uint width, uint height, vector<string> sprites) : DynamicGameObject(p, dm, sprites, PLAYER_ACCELERATION_DECREASE, PLAYER_SPEED, PLAYER_MAX_ACCELERATION), CollisionBox(width, height)
 {
 }
 
 void Player::render()
 {
-    if (_direction == Position(0, 0))
+    int dir = getAccDirection();
+
+    switch (dir)
     {
-        getDisplayManager().setTexture("rocketman.png", (uint)getPosition().getX(), (uint)getPosition().getY());
-    }
-    else if (_direction == Position(1, 0))
-    {
-        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 270);
-    }
-    else if (_direction == Position(0, 1))
-    {
+    case DOWN:
         getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY());
-    }
-    else if (_direction == Position(-1, 0))
-    {
-        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 90);
-    }
-    else if (_direction == Position(0, -1))
-    {
+        break;
+    case TOP:
         getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 180);
+        break;
+    case RIGHT:
+        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 270);
+        break;
+    case LEFT:
+        getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 90);
+        break;
+    default:
+        getDisplayManager().setTexture("rocketman.png", (uint)getPosition().getX(), (uint)getPosition().getY());
+        break;
     }
 }
 
