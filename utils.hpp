@@ -6,7 +6,7 @@
 #include <iostream>
 // TODO: delete this
 
-#define SCALE_FACTOR 5
+#define SCALE_FACTOR 1
 
 #define DEFAULT_SCREEN_WIDTH 160
 #define DEFAULT_SCREEN_HEIGHT 144

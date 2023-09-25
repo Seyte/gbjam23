@@ -240,7 +240,7 @@ void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCorn
     SDL_Rect destinationRect = {(int)leftCornerX - _cameraOffset.getX(), (int)leftCornerY - _cameraOffset.getY(), s.getWidth(), s.getHeight()};
     if (angle == 0)
     {
-        SDL_RenderCopy(app.renderer, texture, NULL, &destinationRect);
+        SDL_RenderCopyEx(app.renderer, texture, NULL, &destinationRect, 0, NULL, SDL_FLIP_NONE);
     }
     else
     {

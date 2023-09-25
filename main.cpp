@@ -207,8 +207,8 @@ int main(int argc, char *argv[])
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
     Asteroid asteroid(Position(150, 80), DM);
     asteroid.setDirection(Position(7, 2));
-    StaticText inventoryText("Parts: ", 12, Position(130, 0), 20, 10, true, DM);
-    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid, &secondPart, &spaceShipMiddle, &inventoryText};
+    // StaticText inventoryText("Parts: ", 12, Position(130, 0), 20, 10, true, DM);
+    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid, &secondPart, &spaceShipMiddle};
     interactableObjects.push_back(&firstPart);
     interactableObjects.push_back(&spaceShip);
     interactableObjects.push_back(&secondPart);
