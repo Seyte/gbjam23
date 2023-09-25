@@ -31,6 +31,11 @@ void SpaceShip::interact(Player &interactor)
     }
 }
 
+bool SpaceShip::isFixed()
+{
+    return _fixed;
+}
+
 void SpaceShip::grab(Player &grabber) { (void)grabber; }
 
 Position SpaceShip::getInteractionPoint()

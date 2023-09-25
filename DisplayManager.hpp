@@ -37,7 +37,7 @@ public:
     void setPixel(int x, int y, Color color);
     void setTexture(string filename, uint leftCornerX, uint leftCornerY, double angle = 0);
     Sprite *getSprite(string filename);
-    void setText(string text, Position p, int width, int height);
+    void setText(string text, int fontSize, Position p, int width, int height);
     void playSound(string sound);
     virtual ~DisplayManager();
 };

@@ -22,6 +22,7 @@ public:
     void interact(Player &interactor);
     void grab(Player &grabber);
     Position getInteractionPoint();
+    bool isFixed();
 };
 
 #endif

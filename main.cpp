@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
     Asteroid asteroid(Position(150, 80), DM);
     asteroid.setDirection(Position(7, 2));
-    StaticText inventoryText("Parts: ", Position(130, 0), 20, 10, true, DM);
+    StaticText inventoryText("Parts: ", 12, Position(130, 0), 20, 10, true, DM);
     list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid, &secondPart, &spaceShipMiddle, &inventoryText};
     interactableObjects.push_back(&firstPart);
     interactableObjects.push_back(&spaceShip);
@@ -232,6 +232,16 @@ int main(int argc, char *argv[])
         gettimeofday(&current_frame, NULL);
         deltaTime = (current_frame.tv_sec * 1000000 + current_frame.tv_usec) - (last_frame.tv_sec * 1000000 + last_frame.tv_usec);
         deltaTimeInUs = (float)deltaTime / (float)1000000;
+
+        // check win
+        if (spaceShip.isFixed() && spaceShipMiddle.isFixed())
+        {
+            StaticText inventoryText("You Win!", 24, Position(50, 40), 50, 30, true, DM);
+            inventoryText.render();
+            DM.render();
+            continue;
+        }
+
         // Get Inputs
         getInput(direction, player);
         // Check for grabs

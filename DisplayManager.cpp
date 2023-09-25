@@ -47,6 +47,14 @@ void initSDL(void)
         exit(1);
     }
 
+    if (TTF_Init() < 0)
+    {
+        printf("TTF could not be initialized!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
+        exit(1);
+    }
+
     app.window = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, windowFlags);
 
     if (!app.window)
@@ -240,15 +248,36 @@ void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCorn
     }
 }
 
-void DisplayManager::setText(string text, Position p, int width, int height)
+void DisplayManager::setText(string text, int fontSize, Position p, int width, int height)
 {
-    TTF_Font *Sans = TTF_OpenFont("Sans.ttf", 12);
+    TTF_Font *Sans = TTF_OpenFont("resources/MinecraftBold-nMK1.otf", fontSize);
+    if (Sans == NULL)
+    {
+        printf("TTF_OpenFont error!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
+        exit(1);
+    }
 
     SDL_Color color = {249, 217, 136, 225}; // rgba(249,217,136,255)
 
     SDL_Surface *surfaceMessage = TTF_RenderText_Solid(Sans, text.c_str(), color);
+    if (surfaceMessage == NULL)
+    {
+        printf("TTF_RenderText_Solid error!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
+        exit(1);
+    }
 
     SDL_Texture *Message = SDL_CreateTextureFromSurface(app.renderer, surfaceMessage);
+    if (Message == NULL)
+    {
+        printf("SDL_CreateTextureFromSurface error!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
+        exit(1);
+    }
 
     SDL_Rect Message_rect;
     Message_rect.x = p.getX();
@@ -256,6 +285,12 @@ void DisplayManager::setText(string text, Position p, int width, int height)
     Message_rect.w = width;
     Message_rect.h = height;
 
-    SDL_RenderCopy(app.renderer, Message, NULL, &Message_rect);
+    if (SDL_RenderCopy(app.renderer, Message, NULL, &Message_rect) != 0)
+    {
+        printf("SDL_RenderCopy error!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
+        exit(1);
+    }
     TTF_CloseFont(Sans);
 }
