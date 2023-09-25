@@ -33,6 +33,7 @@ int deltaTime;
 float deltaTimeInUs;
 
 int frame = 0;
+bool ended = false;
 
 void interactWithObjects(Player &player)
 {
@@ -57,25 +58,28 @@ void getInput(Position &p, Player &player)
         switch (event.type)
         {
         case SDL_KEYDOWN:
-            switch (event.key.keysym.sym)
+            if (!ended)
             {
-            case SDLK_UP:
-                y--;
-                break;
-            case SDLK_DOWN:
-                y++;
-                break;
-            case SDLK_LEFT:
-                x--;
-                break;
-            case SDLK_RIGHT:
-                x++;
-                break;
-            case SDLK_a:
-                interactWithObjects(player);
-                break;
-            default:
-                break;
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_UP:
+                    y--;
+                    break;
+                case SDLK_DOWN:
+                    y++;
+                    break;
+                case SDLK_LEFT:
+                    x--;
+                    break;
+                case SDLK_RIGHT:
+                    x++;
+                    break;
+                case SDLK_a:
+                    interactWithObjects(player);
+                    break;
+                default:
+                    break;
+                }
             }
             break;
         case SDL_QUIT:
@@ -233,12 +237,18 @@ int main(int argc, char *argv[])
         deltaTime = (current_frame.tv_sec * 1000000 + current_frame.tv_usec) - (last_frame.tv_sec * 1000000 + last_frame.tv_usec);
         deltaTimeInUs = (float)deltaTime / (float)1000000;
 
+        if (ended)
+        {
+            StaticText inventoryText("You Win!", 32, Position(25, 40), 100, 50, true, DM);
+            inventoryText.render();
+            DM.render();
+            getInput(direction, player);
+            continue;
+        }
         // check win
         if (spaceShip.isFixed() && spaceShipMiddle.isFixed())
         {
-            StaticText inventoryText("You Win!", 24, Position(50, 40), 50, 30, true, DM);
-            inventoryText.render();
-            DM.render();
+            ended = true;
             continue;
         }
 

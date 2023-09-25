@@ -32,7 +32,6 @@
 *.app
 
 #build (partially temporary)
-main
 DisplayManager
 Color
 /build/*
