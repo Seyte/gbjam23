@@ -19,3 +19,8 @@ double getDistance(Position p1, uint w1, uint h1, Position p2, uint w2, uint h2)
     int y2 = p2.getY() + (h2 / 2);
     return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
+
+double getDistance(Position p1, Position p2)
+{
+    return sqrt(pow(p1.getX() - p2.getX(), 2) + pow(p1.getY() - p2.getY(), 2));
+}

@@ -34,4 +34,5 @@ using namespace std;
 
 bool fileEndsWithSuffix(string file, string suffix);
 double getDistance(Position p1, uint w1, uint h1, Position p2, uint w2, uint h2);
+double getDistance(Position p1, Position p2);
 #endif

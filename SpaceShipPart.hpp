@@ -14,6 +14,7 @@ public:
     void interact(Player &interactor);
     void grab(Player &grabber);
     void bounce(int direction);
+    Position getInteractionPoint();
 };
 
 #endif

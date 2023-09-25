@@ -25,3 +25,8 @@ void SpaceShipPart::render()
 }
 
 void SpaceShipPart::bounce(int direction) { (void)direction; }
+
+Position SpaceShipPart::getInteractionPoint()
+{
+    return Position(getPosition().getX() + (width / 2), getPosition().getY() + (height / 2));
+}

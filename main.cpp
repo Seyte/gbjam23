@@ -35,9 +35,10 @@ int frame = 0;
 
 void interactWithObjects(Player &player)
 {
+    Position p(player.getPosition().getX() + (player.getWidth() / 2), player.getPosition().getY() + (player.getHeight() / 2));
     for (Interactable *interactable : interactableObjects)
     {
-        if (getDistance(player.getPosition(), player.getHeight(), player.getHeight(), interactable->getPosition(), interactable->width, interactable->height) <= interactable->interactionDistance)
+        if (getDistance(p, interactable->getInteractionPoint()) <= interactable->interactionDistance)
         {
             interactable->interact(player);
         }
@@ -198,14 +199,18 @@ int main(int argc, char *argv[])
     StaticSprites background1(Position(0, 0), "map_tiled.png", DM);
     Player player(p1, DM, 18, 18, playerSprites);
     Position direction(0, 0);
-    SpaceShipPart firstPart(Position(120, 30), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
-    SpaceShip spaceShip(Position(0, 0), DM, 96, 160, vector<string>{"rocket_broken_deadheart.png", "rocket_broken_glowingheart.png"}, 52, firstPart.getId());
+    SpaceShipPart firstPart(Position(400, 30), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
+    SpaceShip spaceShip(Position(0, 0), DM, 96, 144, vector<string>{"rocket_broken_deadheart.png", "rocket_broken_glowingheart.png"}, "rocket_fixed.png", 15, firstPart.getId(), Position(0 + 96, 0 + 114));
+    SpaceShipPart secondPart(Position(359, 230), DM, vector<string>{"spaceshippart_1.png"}, 23, 18, 18);
+    SpaceShip spaceShipMiddle(Position(0, 144), DM, 96, 144, vector<string>{"rocket_middle_broken_deadheart.png", "rocket_middle_broken_glowingheart.png"}, "rocket_middle_fixed.png", 15, secondPart.getId(), Position(0 + 96, 144 + 72));
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
-    Asteroid asteroid(Position(150,80),DM);
-    asteroid.setDirection(Position(7,2));
-    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid};
+    Asteroid asteroid(Position(150, 80), DM);
+    asteroid.setDirection(Position(7, 2));
+    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid, &secondPart, &spaceShipMiddle};
     interactableObjects.push_back(&firstPart);
     interactableObjects.push_back(&spaceShip);
+    interactableObjects.push_back(&secondPart);
+    interactableObjects.push_back(&spaceShipMiddle);
     int collisionMap[(WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2)];
     DEFAULT_COLLISION_VALUE = background1.getId();
     for (int i = 0; i < (WORLD_HEGIHT + 2) * (WORLD_WIDTH + 2); i++)
