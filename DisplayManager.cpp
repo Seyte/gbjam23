@@ -163,3 +163,23 @@ void DisplayManager::setTexture(string filename, uint leftCornerX, uint leftCorn
         SDL_RenderCopyEx(app.renderer, texture, NULL, &destinationRect, angle, NULL, SDL_FLIP_NONE);
     }
 }
+
+void DisplayManager::setText(string text, Position p, int width, int height)
+{
+    TTF_Font *Sans = TTF_OpenFont("Sans.ttf", 12);
+
+    SDL_Color color = {249, 217, 136, 225}; // rgba(249,217,136,255)
+
+    SDL_Surface *surfaceMessage = TTF_RenderText_Solid(Sans, text.c_str(), color);
+
+    SDL_Texture *Message = SDL_CreateTextureFromSurface(app.renderer, surfaceMessage);
+
+    SDL_Rect Message_rect;
+    Message_rect.x = p.getX();
+    Message_rect.y = p.getY();
+    Message_rect.w = width;
+    Message_rect.h = height;
+
+    SDL_RenderCopy(app.renderer, Message, NULL, &Message_rect);
+    TTF_CloseFont(Sans);
+}

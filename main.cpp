@@ -11,6 +11,7 @@
 #include "Interactable.hpp"
 #include "SpaceShipPart.hpp"
 #include "Asteroid.hpp"
+#include "StaticText.hpp"
 #include <iostream>
 #include <list>
 
@@ -206,7 +207,8 @@ int main(int argc, char *argv[])
     InvisibleWall worldBoder(Position(-1, -1), DM, WORLD_WIDTH + 2, WORLD_HEGIHT + 2);
     Asteroid asteroid(Position(150, 80), DM);
     asteroid.setDirection(Position(7, 2));
-    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid, &secondPart, &spaceShipMiddle};
+    StaticText inventoryText("Parts: ", Position(130, 0), 20, 10, true, DM);
+    list<GameObject *> gameObjects = {&background1, &player, &spaceShip, &worldBoder, &firstPart, &asteroid, &secondPart, &spaceShipMiddle, &inventoryText};
     interactableObjects.push_back(&firstPart);
     interactableObjects.push_back(&spaceShip);
     interactableObjects.push_back(&secondPart);
