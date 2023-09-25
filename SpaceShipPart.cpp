@@ -7,6 +7,7 @@ void SpaceShipPart::grab(Player &grabber)
 {
     grabbed = true;
     grabber.addToInventory(getId());
+    getDisplayManager().playSound("gotPart");
 }
 
 void SpaceShipPart::interact(Player &interactor)

@@ -1,5 +1,5 @@
 CC = g++
-CPPFLAGS = -Wall -g -Wextra -std=c++17 `sdl2-config --cflags` -lSDL2_image -lSDL2_ttf
+CPPFLAGS = -Wall -g -Wextra -std=c++17 `sdl2-config --cflags` -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 SDLFLAGS = `sdl2-config --libs`
 OBJDIR = ./build/
 

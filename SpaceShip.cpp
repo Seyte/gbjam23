@@ -27,6 +27,7 @@ void SpaceShip::interact(Player &interactor)
     {
         interactor.getInventory().erase(std::remove(interactor.getInventory().begin(), interactor.getInventory().end(), _fixablePartID), interactor.getInventory().end());
         _fixed = true;
+        getDisplayManager().playSound("fix");
     }
 }
 

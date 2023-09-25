@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "SDL.h"
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include "Sprite.hpp"
 #include "utils.hpp"
@@ -37,6 +38,7 @@ public:
     void setTexture(string filename, uint leftCornerX, uint leftCornerY, double angle = 0);
     Sprite *getSprite(string filename);
     void setText(string text, Position p, int width, int height);
+    void playSound(string sound);
     virtual ~DisplayManager();
 };
 

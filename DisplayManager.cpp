@@ -5,6 +5,10 @@
 #include <iostream>
 #include <filesystem>
 
+#define BACKGROUND_SOUND "resources/background.mp3"
+#define GOTPART_SOUND "resources/gotPart.wav"
+#define FIX_SOUND "resources/fix.wav"
+
 using namespace std;
 
 namespace fs = std::filesystem;
@@ -17,6 +21,10 @@ typedef struct
 
 App app;
 
+Mix_Music *gotPart;
+Mix_Chunk *bg;
+Mix_Music *fix;
+
 void initSDL(void)
 {
     int rendererFlags, windowFlags;
@@ -28,6 +36,14 @@ void initSDL(void)
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("Couldn't initialize SDL: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+        printf("SDL2_mixer could not be initialized!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
         exit(1);
     }
 
@@ -48,11 +64,67 @@ void initSDL(void)
         printf("Failed to create renderer: %s\n", SDL_GetError());
         exit(1);
     }
+
+    // Load .mp3 sound
+    bg = Mix_LoadWAV(BACKGROUND_SOUND);
+    if (!bg)
+    {
+        printf(".mp3 sound '%s' could not be loaded!\n"
+               "SDL_Error: %s\n",
+               BACKGROUND_SOUND, SDL_GetError());
+        exit(1);
+    }
+
+    // Load .OGG sounds
+    gotPart = Mix_LoadMUS(GOTPART_SOUND);
+    fix = Mix_LoadMUS(FIX_SOUND);
+    // Mix_Music *clapnsnare3 = Mix_LoadMUS(TECHNO_CLAP_SNARE_SOUND);
+    // Mix_Music *clapnsnare4 = Mix_LoadMUS(REVERB_SNARE_SOUND);
+    if (!gotPart || !fix)
+    {
+        printf("One of the .wav sounds could not be loaded!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
+        exit(1);
+    }
+
+    // Play waves sound
+    if (Mix_PlayChannel(-1, bg, -1) == -1)
+    {
+        printf("Background sound could not be played!\n"
+               "SDL_Error: %s\n",
+               SDL_GetError());
+        Mix_FreeChunk(bg);
+        exit(1);
+    }
+
     SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
     if (SDL_RenderSetLogicalSize(app.renderer, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT) != 0)
     {
         printf("Failed to resize renderer: %s\n", SDL_GetError());
         exit(1);
+    }
+}
+
+void DisplayManager::playSound(string sound)
+{
+    if (sound == "gotPart")
+    {
+        if (Mix_PlayMusic(gotPart, 0) == -1)
+        {
+            printf(".wav sound could not be played!\n"
+                   "SDL_Error: %s\n",
+                   SDL_GetError());
+        }
+    }
+    else if (sound == "fix")
+    {
+        if (Mix_PlayMusic(fix, 0) == -1)
+        {
+            printf(".wav sound could not be played!\n"
+                   "SDL_Error: %s\n",
+                   SDL_GetError());
+        }
     }
 }
 
@@ -126,6 +198,10 @@ void DisplayManager::render()
 DisplayManager::~DisplayManager()
 {
     _spriteTable.clear();
+
+    Mix_FreeChunk(bg);
+    Mix_FreeMusic(gotPart);
+    Mix_FreeMusic(fix);
 
     SDL_DestroyWindow(app.window);
     SDL_DestroyRenderer(app.renderer);
