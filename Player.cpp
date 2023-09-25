@@ -31,7 +31,7 @@ void Player::render()
         getDisplayManager().setTexture(_sprites.getTextureString(), (uint)getPosition().getX(), (uint)getPosition().getY(), 90);
         break;
     default:
-        getDisplayManager().setTexture("rocketman.png", (uint)getPosition().getX(), (uint)getPosition().getY());
+        getDisplayManager().setTexture("spacedude.png", (uint)getPosition().getX(), (uint)getPosition().getY());
         break;
     }
 }
